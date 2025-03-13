@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"
+    th:replace="~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quản lý sản phẩm</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    </head>
+
+    <body>
+        <main class="users">
+            <div class="container mt-4">
+                <h2>Quản lý Sản Phẩm</h2>
+                <hr>
+
+                <div th:if="${success}" class="alert alert-success">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if="${error}" class="alert alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <form action="/product/index" th:object="${item}" method="post"
+                    enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{productId}" />
+                    <input name="productName" th:field="*{productName}"
+                        placeholder="Product  Name?" />
+                    <input name="description" th:field="*{description}"
+                        placeholder="descripton?" />
+                    <input name="price" th:field="*{price}"
+                        placeholder="price?" />
+                    <input name="stockQuantity" th:field="*{stockQuantity}"
+                        placeholder="StockQuantity?" />
+
+                    <img th:if="${item.imageUrl}" th:src="${item.imageUrl}"
+                        alt="Ảnh sản phẩm"
+                        style="width: 150px; height: 150px; display: block; margin-bottom: 10px;">
+
+                    <input type="file" name="file" />
+
+                    <!-- <div th:if="${item.imageUrls}">
+                        <th:block th:each="image : ${item.imageUrls}">
+                            <img th:src="${image}" alt="Ảnh sản phẩm"
+                                style="width: 150px; height: 150px; margin: 5px;">
+                        </th:block>
+                    </div>
+
+                    <input type="file" name="files" multiple /> -->
+
+                    <select name="category" class="form-select">
+                        <option value="null">-- Chọn danh mục --</option>
+                        <option th:each="category : ${categories}"
+                            th:value="${category.categoryId}"
+                            th:text="${category.name}"
+                            th:selected="${category.categoryId == selectedCategoryId}">
+                        </option>
+                    </select>
+
+                    <div class="size">
+                        <label class="size-label">Size của sản phẩm:</label><br>
+                        <div class="size-container">
+                            <div class="size-item">
+                                <input type="checkbox" id="sizeS" name="sizes"
+                                    value="S"
+                                    th:checked="${selectedSizes != null and selectedSizes.contains('S')}">
+                                <label for="sizeS">S</label>
+                            </div>
+                            <div class="size-item">
+                                <input type="checkbox" id="sizeM" name="sizes"
+                                    value="M"
+                                    th:checked="${selectedSizes != null and selectedSizes.contains('M')}">
+                                <label for="sizeM">M</label>
+                            </div>
+                            <div class="size-item">
+                                <input type="checkbox" id="sizeL" name="sizes"
+                                    value="L"
+                                    th:checked="${selectedSizes != null and selectedSizes.contains('L')}">
+                                <label for="sizeL">L</label>
+                            </div>
+                            <div class="size-item">
+                                <input type="checkbox" id="sizeXL" name="sizes"
+                                    value="XL"
+                                    th:checked="${selectedSizes != null and selectedSizes.contains('XL')}">
+                                <label for="sizeXL">XL</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <button class="btn btn-primary mb-3"
+                        formaction="/product/createAndUpdate">Create</button>
+                    <button class="btn btn-primary mb-3"
+                        formaction="/product/createAndUpdate">Update</button>
+                    <a
+                        th:href="@{|/product/delete/${item.productId}|}">Delete</a>
+                    <a href="/product/index">Reset</a>
+                </form>
+            </div>
+
+            <div class="container mt-4">
+                <hr>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Danh mục</th>
+                            <th>Thời gian</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="item : ${items}">
+                            <tr>
+                                <td th:text="${item.productId}"></td>
+                                <td>
+                                    <img th:src="${item.imageUrl}"
+                                        alt="Hình sản phẩm"
+                                        style="width: 100px; height: 100px;">
+
+                                </td>
+                                <!-- <td>
+                                    <div>
+                                        <th:block
+                                            th:each="image : ${item.imageUrls}">
+                                            <img th:src="${image}"
+                                                alt="Ảnh sản phẩm"
+                                                style="width: 100px; height: 100px; margin: 5px;">
+                                        </th:block>
+                                    </div>
+
+                                </td> -->
+                                <td th:text="${item.productName}"></td>
+                                <td
+                                    th:text="${#numbers.formatInteger(item.price, 3, 'POINT')}"></td>
+                                <td th:text="${item.stockQuantity}"></td>
+                                <td th:text="${item.category.name}"></td>
+                                <td
+                                    th:text="${#temporals.format(item.createdAt, 'dd/MM/yyyy HH:mm')}">
+                                    <td>
+                                        <a class="edit"
+                                            th:href="@{|/product/edit/${item.productId}|}">Edit</a>
+                                    </td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+
+    </html>

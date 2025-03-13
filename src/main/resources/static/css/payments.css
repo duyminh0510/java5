@@ -1,0 +1,94 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.payment {
+    margin-bottom: 30px;
+}
+
+.payment h3 {
+    text-align: center;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.payment .container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment .row {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.payment .row:last-child {
+    border-bottom: none;
+}
+
+.payment .img-fluid {
+    max-width: 270px;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.payment .img-fluid:hover {
+    transform: scale(1.05);
+}
+
+.payment h5 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.payment p {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.payment .COD {
+    font-style: italic;
+    color: #555;
+}
+
+.payment form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.payment input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.payment button {
+    background-color: #28a745;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.payment button:hover {
+    background-color: #218838;
+}

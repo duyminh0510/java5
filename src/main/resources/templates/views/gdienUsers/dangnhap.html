@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+        ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+        : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>dangnhap</title>
+    </head>
+
+    <body>
+        <!-- Kiểm tra nếu đã đăng nhập, redirect về trang home -->
+        <!-- <script th:if="${session.role != null}">
+        window.location.href = "/";
+    </script> -->
+        <main>
+            <section>
+                <div class="container-fluid" style="margin-top: 65px;">
+                    <div
+                        class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-md-9 col-lg-6 col-xl-5">
+                            <img
+                                th:src="@{https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp}"
+                                class="img-fluid" alt="Sample image">
+                        </div>
+                        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                            <div th:if="${message}" class="alert alert-danger">
+                                <p th:text="${message}"></p>
+                            </div>
+                            <form action="/dangnhap/form" method="post">
+                                <div
+                                    class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                                    <p class="lead fw-normal mb-0 me-3">Sign in
+                                        with
+                                    </p>
+                                    <button type="button"
+                                        class="btn btn-primary btn-floating mx-1">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-primary btn-floating mx-1">
+                                        <i class="fab fa-twitter"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-primary btn-floating mx-1">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </button>
+                                </div>
+
+                                <div
+                                    class="divider d-flex align-items-center my-4">
+                                    <p
+                                        class="text-center fw-bold mx-3 mb-0">Or</p>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Phone
+                                        or
+                                        Email</label>
+                                    <input type="text" class="form-control"
+                                        id="name" name="name"
+                                        autocomplete="off">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password"
+                                        class="form-label">Password</label>
+                                    <input type="password" class="form-control"
+                                        id="password" name="password"
+                                        autocomplete="new-password">
+                                </div>
+                                <p style="color: red;" th:text="${error}"></p>
+                                <button type="submit" class="btn btn-primary"
+                                    style="width: 100px; margin-left: 150px; margin-top: 10px; margin-bottom: 25px;">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </body>
+
+</html>

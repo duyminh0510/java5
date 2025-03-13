@@ -1,0 +1,29 @@
+.detaile .btn {
+    background-color: rgb(255, 211, 195);
+    color: orangered;
+}
+
+.detaile .btn:hover {
+    background-color: rgb(247, 190, 169);
+    color: orangered;
+}
+
+.detaile .lablesize {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.detaile {
+    background-color: #f8f5f5;
+}
+
+.detaile .form-select {
+    width: 80px;
+    margin-bottom: 20px;
+}
+
+.detaile .input-group {
+    margin-bottom: 25px;
+    width: 130px;
+}

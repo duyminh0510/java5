@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+    ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+    : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <title>capnhattk</title>
+    </head>
+
+    <body>
+        <main>
+            <section class="gradient-custom"
+                style="height: 600px; margin-top: 5px; margin-bottom: 10px;">
+                <div class="container">
+                    <div
+                        class="row d-flex justify-content-center align-items-center">
+                        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                            <div class="card bg-dark text-white"
+                                style="border-radius: 1rem; width: 600px; height: 550px; margin-top: 20px; margin-left: -90px;">
+                                <div class="card-body text-center"
+                                    style="background-color: rgb(172, 223, 255);">
+                                    <div class="mb-md-5 mt-md-4 pb-5">
+                                        <h5 class="fw-bold mb-2 text-uppercase"
+                                            style="color: blue;">CHỈNH SỬA HỒ SƠ
+                                        </h5>
+
+                                        <!-- Form cập nhật hồ sơ -->
+                                        <form action="/hosocanhan/update"
+                                            method="post"
+                                            th:object="${hosoUpdateDTO}">
+
+                                            <!-- Họ và tên -->
+                                            <div
+                                                class="form-outline form-white mb-4">
+                                                <input type="text" id="username"
+                                                    name="username"
+                                                    placeholder="Họ và tên"
+                                                    class="form-control form-control-lg mt-3"
+                                                    autocomplete="off"
+                                                    style="font-size: 15px;"
+                                                    th:value="*{username}" />
+                                                <p class="text-danger mt-2"
+                                                    th:if="${#fields.hasErrors('username')}"
+                                                    th:text="${#fields.errors('username')[0]}"></p>
+                                            </div>
+
+                                            <!-- Số điện thoại -->
+                                            <div
+                                                class="form-outline form-white mb-4">
+                                                <input type="text" id="phone"
+                                                    name="phone"
+                                                    placeholder="Số điện thoại"
+                                                    class="form-control form-control-lg mt-3"
+                                                    autocomplete="off"
+                                                    style="font-size: 15px;"
+                                                    th:value="*{phone}" />
+                                                <p class="text-danger mt-2"
+                                                    th:if="${#fields.hasErrors('phone')}"
+                                                    th:text="${#fields.errors('phone')[0]}"></p>
+
+                                            </div>
+
+                                            <!-- Email -->
+                                            <div
+                                                class="form-outline form-white mb-4">
+                                                <input type="text" id="email"
+                                                    name="email"
+                                                    placeholder="Email"
+                                                    class="form-control form-control-lg mt-3"
+                                                    autocomplete="off"
+                                                    style="font-size: 15px;"
+                                                    th:value="*{email}" />
+                                                <p class="text-danger mt-2"
+                                                    th:if="${#fields.hasErrors('email')}"
+                                                    th:errors="*{email}"></p>
+                                            </div>
+
+                                            <!-- Địa chỉ -->
+                                            <div
+                                                class="form-outline form-white mb-4">
+                                                <input type="text" id="address"
+                                                    name="address"
+                                                    placeholder="Địa chỉ"
+                                                    class="form-control form-control-lg mt-3"
+                                                    autocomplete="off"
+                                                    style="font-size: 15px;"
+                                                    th:value="*{address}" />
+                                                <p class="text-danger mt-2"
+                                                    th:if="${#fields.hasErrors('address')}"
+                                                    th:errors="*{address}"></p>
+                                            </div>
+
+                                            <!-- Nút lưu thay đổi -->
+                                            <button
+                                                class="btn btn-outline-light btn-lg mt-4"
+                                                type="submit"
+                                                style="background-color: blue;">
+                                                Lưu thay đổi
+                                            </button>
+                                        </form>
+
+                                        <!-- Hiển thị thông báo -->
+                                        <div style="margin-top: 20px;">
+                                            <div th:if="${success}"
+                                                class="alert alert-success"
+                                                role="alert"
+                                                th:text="${success}"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </body>
+
+</html>

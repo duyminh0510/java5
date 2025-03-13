@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+    ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+    : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Search</title>
+    </head>
+
+    <body>
+        <main class="search">
+            <div class="container">
+                <h4 class="text-info mt-2"><i>Sản phẩm liên quan</i></h4>
+                <div th:if="${products.isEmpty()}">
+                    <p>Không tìm thấy sản phẩm nào.</p>
+                </div>
+                <div class="row"
+                    style="background-color: white; border-radius: 5px; margin-top: -13px;">
+                    <!-- Vòng lặp Thymeleaf để hiển thị danh sách sản phẩm -->
+                    <div class="col-lg-3 col-md-6 mb-4"
+                        th:each="product : ${products}">
+                        <div class="card shadow-sm">
+                            <a
+                                th:href="@{/detailedpage/{id}(id=${product.productId})}">
+                                <img th:src="${product.imageUrl}"
+                                    alt="Hình sản phẩm"
+                                    class="card-img-top img-fluid"
+                                    style="height: 200px; object-fit: cover;">
+                            </a>
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-truncate">
+                                    <a
+                                        th:href="@{/detailedpage/{id}(id=${product.productId})}"
+                                        class="text-decoration-none text-dark">
+                                        <span
+                                            th:text="${product.productName}"></span>
+                                    </a>
+                                </h5>
+                                <h5 class="card-title text-truncate">
+                                    <a style="margin-bottom: 32px;"
+                                        th:href="@{/detailedpage/{id}(id=${product.productId})}"
+                                        class="text-decoration-none text-dark">
+                                        <span class="span"
+                                            th:text="'đ ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <a class="view-details"
+                                th:href="@{/detailedpage/{id}(id=${product.productId})}">
+                                <span>Xem sản phẩm chi
+                                    tiết</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Phân trang -->
+                    <div class="row pagination-controls"
+                        style="margin-bottom: 35px;">
+                        <div class="col text-center">
+                            <a class="btn btn-primary btn-sm"
+                                th:if="${currentPage > 1}"
+                                th:href="@{/product/search(keyword=${keyword}, page=${currentPage - 1}, size=${size}, sortBy=${sortBy}, direction=${direction})}">
+                                Trước
+                            </a>
+                            <span>Trang <span th:text="${currentPage}"></span> /
+                                <span th:text="${totalPages}"></span></span>
+                            <a class="btn btn-primary btn-sm"
+                                th:if="${currentPage < totalPages}"
+                                th:href="@{/product/search(keyword=${keyword}, page=${currentPage + 1}, size=${size}, sortBy=${sortBy}, direction=${direction})}">
+                                Kế Tiếp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+
+</html>

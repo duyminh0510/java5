@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+
+/* Tabs */
+
+.statistics {
+    width: 85%;
+    margin-left: 90px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.statistics .tabs {
+    display: flex;
+    border-bottom: 3px solid #007bff;
+    margin-bottom: 20px;
+}
+
+.statistics .tab {
+    padding: 12px 20px;
+    border: 1px solid #007bff;
+    border-bottom: none;
+    cursor: pointer;
+    background-color: #e9ecef;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.statistics .tab:hover {
+    background-color: #d6d8db;
+}
+
+.statistics .active-tab {
+    background-color: #007bff;
+    color: white;
+    border-top: 3px solid #0056b3;
+}
+
+
+/* Nội dung */
+
+.statistics .content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #007bff;
+    background: white;
+    border-radius: 5px;
+}
+
+.statistics .active-content {
+    display: block;
+}
+
+
+/* Bảng */
+
+.statistics table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: white;
+}
+
+.statistics th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.statistics th {
+    background-color: #007bff;
+    color: white;
+}
+
+.statistics tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

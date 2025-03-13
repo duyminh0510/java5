@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+        ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+        : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Payment</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    </head>
+
+    <body>
+        <main class="payment">
+            <div class="container mt-5">
+                <h3>Thanh Toán</h3>
+                <hr>
+
+                <div th:each="cartItem : ${cartItems}"
+                    class="row mb-4 align-items-center">
+                    <!-- Cột Ảnh (4 cột) -->
+                    <div class="col-md-4 text-center">
+                        <img th:src="@{|${cartItem.product.imageUrl}|}"
+                            alt="Sản phẩm" class="img-fluid rounded">
+                    </div>
+
+                    <!-- Cột Thông Tin Sản Phẩm (8 cột) -->
+                    <div class="col-md-8">
+                        <p>Tên sản phẩm: <strong
+                                th:text="${cartItem.product.productName}"></strong></p>
+                        <p>Size: <strong
+                                th:text="${cartItem.size}"></strong></p>
+                        <p>Giá: <strong
+                                th:text="${#numbers.formatDecimal(cartItem.product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'"></strong></p>
+                        <p>Số lượng: <strong
+                                th:text="${cartItem.quantity}"></strong></p>
+                        <p>Tổng: <strong
+                                th:text="${#numbers.formatDecimal(cartItem.totalamount, 0, 'COMMA', 0, 'POINT')} + 'đ'"></strong></p>
+                    </div>
+                </div>
+
+                <hr>
+                <h5>Phương thức thanh toán</h5>
+                <p class="COD">Thanh toán khi nhận hàng (COD)</p>
+
+                <h5>Thông tin khách hàng</h5>
+                <form action="/payment/place-order" method="post">
+                    <input type="text" name="username"
+                        th:value="${session.loggedInUser.username}"
+                        placeholder="Họ tên" required />
+                    <input type="text" name="phone"
+                        th:value="${session.loggedInUser.phone}"
+                        placeholder="Số điện thoại" required />
+                    <input type="email" name="email"
+                        th:value="${session.loggedInUser.email}"
+                        placeholder="Email" required />
+                    <input type="text" name="address"
+                        th:value="${session.loggedInUser.address}"
+                        placeholder="Địa chỉ" required />
+
+                    <button style="width: 100px;" type="submit"
+                        class="btn btn-success w-100">Đặt hàng</button>
+                </form>
+
+            </div>
+        </main>
+
+    </body>
+
+</html>

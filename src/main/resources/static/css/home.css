@@ -1,0 +1,100 @@
+/* Phần "Tất cả sản phẩm" */
+
+
+/* Hiệu ứng khi hover vào sản phẩm */
+
+.home .card {
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    /* Cần để căn chỉnh phần tử con */
+    overflow: hidden;
+    /* Đảm bảo không bị tràn nội dung */
+}
+
+
+/* Khi di chuột vào sản phẩm */
+
+.home .card:hover {
+    box-shadow: 0 4px 10px rgb(199, 29, 83);
+    border: 1px solid rgb(234, 94, 59);
+}
+
+
+/* Hiển thị tên sản phẩm */
+
+.home .card-title a {
+    font-size: 0.7rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 3;
+    box-orient: vertical;
+}
+
+
+/* Màu sắc giá sản phẩm */
+
+.home .card-body .card-title .span {
+    color: red;
+}
+
+
+/* Đảm bảo hình ảnh sản phẩm không thay đổi kích thước */
+
+.home .card-img-top {
+    transition: transform 0.3s ease;
+    height: 200px;
+    object-fit: cover;
+}
+
+
+/* Khi hover, không phóng to hình ảnh */
+
+.home .card:hover .card-img-top {
+    transform: scale(1);
+}
+
+
+/* Thêm phần tử "Xem sản phẩm chi tiết" */
+
+.home .card .view-details {
+    font-size: 1rem;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(234, 94, 59);
+    color: white;
+    padding: 5px 10px;
+    display: none;
+    /* Ẩn khi không hover */
+    text-decoration: none;
+}
+
+
+/* Hiển thị "Xem sản phẩm chi tiết" khi hover vào card */
+
+.home .card:hover .view-details {
+    display: block;
+    /* Hiện khi hover */
+    text-decoration: none;
+}
+
+.home aside .list-group-item:hover {
+    background-color: #007bff;
+    /* Màu xanh */
+    color: white;
+    /* Đổi màu chữ để dễ đọc */
+    cursor: pointer;
+}
+
+.home aside .list-group-item:hover a {
+    color: white;
+    /* Đổi màu chữ của link */
+}

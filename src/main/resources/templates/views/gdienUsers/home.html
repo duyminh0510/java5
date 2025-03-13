@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"
+    th:replace="${role == 'admin'} ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>home</title>
+
+    </head>
+
+    <body>
+        <main class="home">
+            <div class="container mt-1" style="margin-bottom: 30px;">
+                <section class="row">
+                    <aside class="col-sm-3" style="margin-top: 20px;">
+                        <h3 class="text-info mt-2" style="margin-bottom: 30px;
+                        ">DANH MỤC
+                            <span style="font-size: 20px;"><i>sản
+                                    phẩm</i></span>
+                        </h3>
+                        <ul class="list-group">
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center"
+                                th:each="category : ${categories}">
+                                <a class="nav-link"
+                                    th:href="@{/(categoryId=${category.categoryId})}"
+                                    th:text="${category.name}"
+                                    style="font-weight: bold; color: red;"></a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <article class="col-sm-9">
+                        <h3 class="text-info mb-3"
+                            style="margin-top: 27px;"><i>Tất
+                                cả sản phẩm</i></h3>
+                        <form method="get" action="/" class="mb-3">
+                            <div class="row">
+                                <div class="col-md-4"
+                                    style="margin-bottom: 25px;">
+                                    <label for="sortBy" class="form-label"
+                                        style="font-weight: bold;">Sắp
+                                        xếp theo:</label>
+                                    <select name="sortBy" id="sortBy"
+                                        class="form-select">
+                                        <option value="createdAt"
+                                            th:selected="${sortBy == 'createdAt'}">Mới
+                                            nhất</option>
+                                        <option value="price"
+                                            th:selected="${sortBy == 'price'}">Giá</option>
+                                        <option value="category"
+                                            th:selected="${sortBy == 'category'}">Danh
+                                            mục</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="direction" class="form-label"
+                                        style="font-weight: bold;">Thứ
+                                        tự:</label>
+                                    <select name="direction" id="direction"
+                                        class="form-select">
+                                        <option value="asc"
+                                            th:selected="${direction == 'asc'}">Tăng
+                                            dần</option>
+                                        <option value="desc"
+                                            th:selected="${direction == 'desc'}">Giảm
+                                            dần</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end"
+                                    style="margin-bottom: 25px;">
+                                    <button type="submit"
+                                        class="btn btn-primary">Lọc</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="row"
+                            style="background-color: white; border-radius: 5px; margin-top: -13px;">
+                            <!-- Vòng lặp Thymeleaf để hiển thị danh sách sản phẩm -->
+                            <div class="col-lg-3 col-md-6 mb-4"
+                                th:each="product : ${products}">
+                                <div class="card shadow-sm">
+                                    <a
+                                        th:href="@{/detailedpage/{id}(id=${product.productId})}">
+                                        <img th:src="${product.imageUrl}"
+                                            alt="Hình sản phẩm"
+                                            class="card-img-top img-fluid"
+                                            style="height: 200px; object-fit: cover;">
+                                    </a>
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title text-truncate">
+                                            <a
+                                                th:href="@{/detailedpage/{id}(id=${product.productId})}"
+                                                class="text-decoration-none text-dark">
+                                                <span
+                                                    th:text="${product.productName}"></span>
+                                            </a>
+                                        </h5>
+                                        <h5 class="card-title text-truncate">
+                                            <a style="margin-bottom: 12px;"
+                                                th:href="@{/detailedpage/{id}(id=${product.productId})}"
+                                                class="text-decoration-none text-dark">
+                                                <span class="span"
+                                                    th:text="'đ ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <a class="view-details"
+                                        th:href="@{/detailedpage/{id}(id=${product.productId})}">
+                                        <span>Xem sản phẩm chi
+                                            tiết</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row pagination-controls"
+                            style="margin-bottom: 35px;">
+                            <div class="col text-center">
+                                <span th:if="${currentPage > 1}">
+                                    <a
+                                        th:href="@{/(page=${currentPage - 1}, size=${size ?: 8}, sortBy=${sortBy ?: 'createdAt'}, direction=${direction ?: 'desc'})}"
+                                        class="btn btn-primary btn-sm">Trước</a>
+                                </span>
+                                <span class="mx-2">
+                                    Trang <span th:text="${currentPage}"></span>
+                                    / <span th:text="${totalPages}"></span>
+                                </span>
+                                <span th:if="${currentPage < totalPages}">
+                                    <a
+                                        th:href="@{/(page=${currentPage + 1}, size=${size ?: 8}, sortBy=${sortBy ?: 'createdAt'}, direction=${direction ?: 'desc'})}"
+                                        class="btn btn-primary btn-sm">Kế
+                                        Tiếp</a>
+                                </span>
+                            </div>
+                        </div>
+
+                    </article>
+
+                </section>
+            </div>
+        </main>
+    </body>
+
+</html>

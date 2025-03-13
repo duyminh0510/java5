@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+    ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+    : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Đăng ký</title>
+    </head>
+
+    <body>
+        <main>
+            <section>
+                <div class="container-fluid"
+                    style="margin-top: 50px; width: 80%;">
+                    <div
+                        class="row d-flex align-items-center justify-content-center h-100">
+                        <div class="col-md-8 col-lg-7 col-xl-6">
+                            <img
+                                th:src="@{https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg}"
+                                class="img-fluid" alt="Phone image">
+                        </div>
+                        <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                            <form th:object="${newusers}" action="/dangky/form"
+                                method="post"
+                                style="margin-top: 20px; margin-bottom: 25px;">
+                                <h4>Đăng ký tài khoản!</h4>
+
+                                <!-- Thông báo lỗi hoặc thành công -->
+                                <div th:if="${message}"
+                                    class="alert alert-danger">
+                                    <p th:text="${message}"></p>
+                                </div>
+                                <div th:if="${success}"
+                                    class="alert alert-success">
+                                    <p th:text="${success}"></p>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" th:field="*{username}"
+                                        class="form-control"
+                                        placeholder="Họ và tên"
+                                        autocomplete="off" />
+                                    <span
+                                        th:if="${#fields.hasErrors('username')}"
+                                        th:text="${#fields.errors('username')[0]}"
+                                        style="color: red;"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="email" th:field="*{email}"
+                                        class="form-control" placeholder="Email"
+                                        autocomplete="off" />
+                                    <span th:if="${#fields.hasErrors('email')}"
+                                        th:text="${#fields.errors('email')[0]}"
+                                        style="color: red;"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password"
+                                        th:field="*{password}"
+                                        class="form-control"
+                                        placeholder="Mật khẩu"
+                                        autocomplete="new-password" />
+                                    <span
+                                        th:if="${#fields.hasErrors('password')}"
+                                        th:text="${#fields.errors('password')[0]}"
+                                        style="color: red;"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" th:field="*{phone}"
+                                        class="form-control"
+                                        placeholder="Số điện thoại"
+                                        autocomplete="off" />
+                                    <span th:if="${#fields.hasErrors('phone')}"
+                                        th:text="${#fields.errors('phone')[0]}"
+                                        style="color: red;"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" th:field="*{address}"
+                                        class="form-control"
+                                        placeholder="Địa chỉ"
+                                        autocomplete="off" />
+                                    <span
+                                        th:if="${#fields.hasErrors('address')}"
+                                        th:text="${#fields.errors('address')[0]}"
+                                        style="color: red;"></span>
+                                </div>
+
+                                <button type="submit"
+                                    class="btn btn-primary btn-lg btn-block">Đăng
+                                    ký</button>
+                            </form>
+                            <style>
+                            .i {
+                                color: red;
+                            }
+                        </style>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+
+</html>

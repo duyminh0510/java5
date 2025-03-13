@@ -1,0 +1,19 @@
+.order .table th {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+}
+
+.order .table td,
+.table th {
+    vertical-align: middle;
+}
+
+.order .action-buttons button {
+    width: 100px;
+    margin: 2px;
+}
+
+.order .status-select {
+    width: 150px;
+}

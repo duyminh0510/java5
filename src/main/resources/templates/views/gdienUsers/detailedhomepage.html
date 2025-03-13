@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="${session.role == 'admin'} 
+        ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+        : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chi tiết sản phẩm</title>
+    </head>
+
+    <body>
+        <main class="detaile">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
+            <div class="container mt-5" style="margin-bottom: 30px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img th:src="${item.imageUrl}" alt="Hình sản phẩm"
+                            class="card-img-top img-fluid"
+                            style="object-fit: cover; width: 450px; height: 450px;">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">
+                                <h5
+                                    style="font-family: Helvetica Neue, Helvetica, Arial, 文泉驛正黑, WenQuanYi Zen Hei, Hiragino Sans GB, 儷黑 Pro, LiHei Pro, Heiti TC, 微軟正黑體, Microsoft JhengHei UI, Microsoft JhengHei, sans-serif;"
+                                    th:text="${item.productName}">
+                                </h5>
+                                <hr>
+                                <hr>
+                                <hr>
+                                <h6
+                                    style="font-family: Helvetica Neue, Helvetica, Arial, 文泉驛正黑, WenQuanYi Zen Hei, Hiragino Sans GB, 儷黑 Pro, LiHei Pro, Heiti TC, 微軟正黑體, Microsoft JhengHei UI, Microsoft JhengHei, sans-serif;"
+                                    th:text="${item.description}">
+                                </h6>
+
+                                <h5 class="card-title text-truncate">
+                                    <h4 style="color: orangered;"
+                                        th:text="'đ ' + ${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></h4>
+                                </h5>
+                                <hr>
+                                <div>
+                                    <label class="lablesize">Size</label>
+                                    <div>
+                                        <select class="form-select" name="size">
+                                            <option th:each="size : ${sizes}"
+                                                th:text="${size.size}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="lablesize">Số lượng</label>
+                                    <div class="input-group">
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            onclick="updateQuantity(-1)">-</button>
+                                        <input type="text" id="quantity"
+                                            class="form-control text-center"
+                                            value="1" readonly>
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            onclick="updateQuantity(1)">+</button>
+                                    </div>
+                                </div>
+
+                                <button class="btn" onclick="addToCart(this)"
+                                    th:data-product-id="${item.productId}">Thêm
+                                    Vào Giỏ Hàng</button>
+                                <a
+                                    th:href="@{/payment/placeanorder(productId=${item.productId}, quantity=${1}, size=${sizes[0].size})}"
+                                    class="btn" style="text-decoration: none;">
+                                    Đặt hàng
+                                </a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h3 style="margin-top: 20px; color: #555; margin-left: 10px;">
+                    <i>Các sản phẩm khác</i> <i
+                        class="fa-solid fa-layer-group fa-bounce"
+                        style="color: #616c75;"></i>
+                </h3>
+                <hr>
+
+                <div class="row" style="border-radius: 5px;
+                    margin: 60px 0;">
+                    <!-- Vòng lặp Thymeleaf để hiển thị danh sách sản phẩm -->
+                    <div class="col-lg-3 col-md-6 mb-4"
+                        th:each="items : ${itemss}">
+                        <div class="card shadow-sm">
+                            <a
+                                th:href="@{/detailedpage/{id}(id=${items.productId})}">
+                                <img th:src="${items.imageUrl}"
+                                    alt="Hình sản phẩm"
+                                    class="card-img-top img-fluid"
+                                    style="height: 200px; object-fit: cover;">
+                            </a>
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-truncate">
+                                    <a style="font-size: 14px;"
+                                        th:href="@{/detailedpage/{id}(id=${items.productId})}"
+                                        class="text-decoration-none text-dark">
+                                        <span
+                                            th:text="${items.productName}"></span>
+                                    </a>
+                                </h5>
+                                <h5 class="card-title text-truncate">
+                                    <a
+                                        style="margin-bottom: 12px; font-size: 12px;"
+                                        th:href="@{/detailedpage/{id}(id=${items.productId})}"
+                                        class="text-decoration-none text-dark">
+                                        <span class="span"
+                                            th:text="'đ ' + ${#numbers.formatDecimal(items.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <script>
+            function updateQuantity(change) {
+                let quantityInput = document.getElementById("quantity");
+                let newQuantity = parseInt(quantityInput.value) + change;
+                if (newQuantity < 1) return; // Không cho số âm
+
+                quantityInput.value = newQuantity;
+
+                // Gửi request cập nhật lên server (AJAX)
+                fetch('/update-quantity', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        quantity: newQuantity
+                    })
+                });
+            }
+
+            function addToCart(button) {
+                let productId = button.getAttribute("data-product-id");
+                let quantity = document.getElementById("quantity").value;
+                let size = document.querySelector("select[name='size']").value; // Lấy giá trị size
+
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'productId=' + productId + '&quantity=' + quantity + '&size=' + encodeURIComponent(size) // Thêm size
+                    })
+                    .then(response => response.text())
+                    .then(message => alert(message))
+                    .catch(error => console.error("Lỗi:", error));
+            }
+        </script>
+        </main>
+    </body>
+
+</html>
