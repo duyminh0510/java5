@@ -3,81 +3,82 @@ package assignment_java5.java5.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import assignment_java5.java5.dao.UserDAO;
 import assignment_java5.java5.entitys.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.PostMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
-    private UserDAO dao;
-    // @Autowired
-    // HttpServletRequest req;
-    // @Autowired
-    // HttpServletResponse resp;
-    // @Autowired
-    // HttpSession session;
+    private UserDAO userDAO;
 
     @RequestMapping("/dangnhap")
-    public String requestMethodName() {
+    public String loginPage() {
         return "views/gdienUsers/dangnhap";
     }
 
     @PostMapping("/dangnhap/form")
-    public String postMethodName(Model model, HttpServletRequest req,
-            HttpServletResponse resp, HttpSession session) {
-        String name = req.getParameter("name");
-        String password = req.getParameter("password");
+    public String login(Model model, HttpServletRequest request, HttpSession session) {
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
 
         if (name == null || name.trim().isEmpty()) {
-            model.addAttribute("error", "Vui lòng nhập tài khoản trước khi đăng nhập!");
+            model.addAttribute("error", "Vui lòng nhập tài khoản!");
             return "views/gdienUsers/dangnhap";
         }
-
         if (password == null || password.trim().isEmpty()) {
-            model.addAttribute("error", "Vui lòng nhập mật khẩu trước khi đăng nhập!");
+            model.addAttribute("error", "Vui lòng nhập mật khẩu!");
             return "views/gdienUsers/dangnhap";
         }
 
-        // Tìm người dùng theo số điện thoại hoặc email
-        User user = dao.findByPhoneOrEmail(name, name);
-
-        // Kiểm tra tài khoản có tồn tại không
+        User user = userDAO.findByPhoneOrEmail(name, name);
         if (user == null) {
-            model.addAttribute("error", "Tài khoản của bạn không hợp lệ!");
+            model.addAttribute("error", "Tài khoản không tồn tại!");
             return "views/gdienUsers/dangnhap";
         }
 
-        // Kiểm tra mật khẩu có đúng không
         if (!user.getPassword().equals(password)) {
             model.addAttribute("error", "Mật khẩu không chính xác!");
             return "views/gdienUsers/dangnhap";
         }
 
         if (!user.isActive()) {
-            model.addAttribute("error", "Tài khoản của bạn đã bị vô hiệu hóa, vui lòng liên hệ quản trị viên!");
+            model.addAttribute("error", "Tài khoản đã bị vô hiệu hóa!");
             return "views/gdienUsers/dangnhap";
         }
 
-        session.setAttribute("loggedInUser", user);
-
         String role = (user.getRole() != null && user.getRole()) ? "admin" : "user";
+
+        // Lưu thông tin vào session
+        session.setAttribute("loggedInUser", user);
+        session.setAttribute("username", user.getUsername()); // Đảm bảo tồn tại
         session.setAttribute("role", role);
-        System.out.println("Role: " + role);
+
+        logger.info("User logged in: {}", user.getUsername());
+        logger.info("Assigned role: {}", role);
+        logger.info("Session saved - username: {}", session.getAttribute("username"));
 
         String redirectUri = (String) session.getAttribute("redirectAfterLogin");
 
-        if (redirectUri != null) {
+        if (redirectUri != null && !redirectUri.equals("/dangnhap")) {
             session.removeAttribute("redirectAfterLogin");
             return "redirect:" + redirectUri;
         }
-        return "redirect:/";
+
+        return role.equals("admin") ? "redirect:/" : "redirect:/";
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/dangnhap";
+    }
 }

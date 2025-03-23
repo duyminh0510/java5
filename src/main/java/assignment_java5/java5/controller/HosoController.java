@@ -39,6 +39,7 @@ public class HosoController {
         return "views/gdienUsers/hosoupdate";
     }
 
+    @SuppressWarnings("null")
     @RequestMapping("/hosocanhan/update")
     public String updatematkhau(
             @Valid @ModelAttribute("hosoUpdateDTO") HosoUpdateDTO dto,
