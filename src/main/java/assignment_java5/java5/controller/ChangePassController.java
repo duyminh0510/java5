@@ -32,6 +32,7 @@ public class ChangePassController {
         return "views/gdienUsers/doimatkhau";
     }
 
+    @SuppressWarnings("null")
     @PostMapping("/doimatkhau/update")
     public String changePassword(
             @Valid @ModelAttribute("changePasswordDTO") ChangePasswordDTO dto,

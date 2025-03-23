@@ -3,111 +3,95 @@
     ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
     : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>orders</title>
-        <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-            rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>orders</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-            integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <!-- Bootstrap JS -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    </head>
+</head>
 
-    <body>
-        <!-- <header th:replace="~{views/layouts/header}">Header</header> -->
+<body>
 
-        <main class="order">
-            <div class="container">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="tabs">
-                            <a th:href="@{/order/history}"
-                                th:classappend="${selectedStatus == null} ? 'active' : ''"
-                                class="tab">Tất cả đơn hàng</a>
+    <main class="order">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="tabs">
+                        <a th:href="@{/order/history}" th:classappend="${selectedStatus == null} ? 'active' : ''"
+                            class="tab">Tất cả đơn hàng</a>
 
-                            <a th:href="@{/order/history(status='PROCESSING')}"
-                                th:classappend="${selectedStatus == 'PROCESSING'} ? 'active' : ''"
-                                class="tab">Đang chờ xử lý</a>
+                        <a th:href="@{/order/history(status='PROCESSING')}"
+                            th:classappend="${selectedStatus == 'PROCESSING'} ? 'active' : ''" class="tab">Đang chờ xử
+                            lý</a>
 
-                            <a th:href="@{/order/history(status='SHIPPED')}"
-                                th:classappend="${selectedStatus == 'SHIPPED'} ? 'active' : ''"
-                                class="tab">Đang giao</a>
+                        <a th:href="@{/order/history(status='SHIPPED')}"
+                            th:classappend="${selectedStatus == 'SHIPPED'} ? 'active' : ''" class="tab">Đang giao</a>
 
-                            <a th:href="@{/order/history(status='COMPLETED')}"
-                                th:classappend="${selectedStatus == 'COMPLETED'} ? 'active' : ''"
-                                class="tab">Đã giao</a>
+                        <a th:href="@{/order/history(status='COMPLETED')}"
+                            th:classappend="${selectedStatus == 'COMPLETED'} ? 'active' : ''" class="tab">Đã giao</a>
 
-                            <a th:href="@{/order/history(status='CANCELED')}"
-                                th:classappend="${selectedStatus == 'CANCELED'} ? 'active' : ''"
-                                class="tab">Đã hủy</a>
-                        </div>
-                    </div>
-
-                    <div class="col-8">
-                        <div th:if="${message}" class="alert alert-danger">
-                            <p th:text="${message}"></p>
-                        </div>
-                        <ul class="order-list">
-                            <li class="order-item" th:each="order : ${orders}">
-                                <div class="order-header">
-                                    <strong>Đơn hàng #<span
-                                            th:text="${order.id}"></span></strong>
-                                    <span class="order-status"
-                                        th:switch="${order.status}">
-                                        <span th:case="'PROCESSING'">Đang chờ xử
-                                            lý</span>
-                                        <span th:case="'SHIPPED'">Đang
-                                            giao</span>
-                                        <span th:case="'COMPLETED'">Đã
-                                            giao</span>
-                                        <span th:case="'CANCELED'">Đã hủy</span>
-                                        <span th:case="*">Không xác định</span>
-                                    </span>
-                                </div>
-
-                                <div class="order-content">
-                                    <div class="product-item"
-                                        th:each="detail : ${order.orderDetails}">
-                                        <a
-                                            th:href="@{/detailedpage/{id}(id=${detail.product.productId})}">
-                                            <img
-                                                th:src="${detail.product.imageUrl}"
-                                                alt="Hình ảnh sản phẩm"></a>
-
-                                        <div class="product-details">
-                                            <a
-                                                th:href="@{/detailedpage/{id}(id=${detail.product.productId})}"
-                                                th:text="${detail.product.productName}"></a>
-                                            <div>Giá: <span
-                                                    th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span></div>
-                                            <div>Số lượng: <span
-                                                    th:text="${detail.quantity}"></span></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-end mt-2">
-                                    Tổng Tiền: <span
-                                        th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
-                                </div>
-                            </li>
-                        </ul>
+                        <a th:href="@{/order/history(status='CANCELED')}"
+                            th:classappend="${selectedStatus == 'CANCELED'} ? 'active' : ''" class="tab">Đã hủy</a>
                     </div>
                 </div>
-            </div>
-        </main>
 
-        <!-- <footer th:replace="~{views/layouts/footer}">Footer</footer> -->
-    </body>
+                <div class="col-8">
+                    <div th:if="${message}" class="alert alert-danger">
+                        <p th:text="${message}"></p>
+                    </div>
+                    <ul class="order-list">
+                        <li class="order-item" th:each="order : ${orders}">
+                            <div class="order-header">
+                                <strong>Đơn hàng #<span th:text="${order.id}"></span></strong>
+                                <span class="order-status" th:switch="${order.status}">
+                                    <span th:case="'PROCESSING'">Đang chờ xử
+                                        lý</span>
+                                    <span th:case="'SHIPPED'">Đang
+                                        giao</span>
+                                    <span th:case="'COMPLETED'">Đã
+                                        giao</span>
+                                    <span th:case="'CANCELED'">Đã hủy</span>
+                                    <span th:case="*">Không xác định</span>
+                                </span>
+                            </div>
+
+                            <div class="order-content">
+                                <div class="product-item" th:each="detail : ${order.orderDetails}">
+                                    <a th:href="@{/detailedpage/{id}(id=${detail.product.productId})}">
+                                        <img th:src="${detail.product.imageUrl}" alt="Hình ảnh sản phẩm"></a>
+
+                                    <div class="product-details">
+                                        <a th:href="@{/detailedpage/{id}(id=${detail.product.productId})}"
+                                            th:text="${detail.product.productName}"></a>
+                                        <div>Giá: <span
+                                                th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                        </div>
+                                        <div>Số lượng: <span th:text="${detail.quantity}"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-end mt-2">
+                                Tổng Tiền: <span
+                                    th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- <footer th:replace="~{views/layouts/footer}">Footer</footer> -->
+</body>
 
 </html>
