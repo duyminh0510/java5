@@ -2,6 +2,7 @@ package assignment_java5.java5.controller;
 
 import assignment_java5.java5.dao.CartDAO;
 import assignment_java5.java5.dao.CartItemDAO;
+import assignment_java5.java5.dto.Role;
 import assignment_java5.java5.entitys.Cart;
 import assignment_java5.java5.entitys.CartItem;
 import assignment_java5.java5.entitys.User;
@@ -111,7 +112,7 @@ public class CartController {
             return "Vui lòng bạn đăng nhập để có thể thêm sản phẩm vào giỏ hàng!";
         }
 
-        if (user.getRole() == true) { // Nếu là admin
+        if (user.getRole() == Role.ADMIN) { // Nếu là admin
             return "Bạn chỉ có quyền quản lý, không có quyền thêm vào giỏ hàng!";
         }
 
