@@ -9,14 +9,14 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li th:if="${session.role == 'admin'}"><a href="/category/index"
-                        class="nav-link px-2 link-secondary">Danh mục</a></li>
+                <li th:if="${session.role == 'admin'}"><a href="/category/index" class="nav-link px-2 link-dark">Danh
+                        mục</a></li>
                 <li th:if="${session.role == 'admin'}"><a href="/product/index" class="nav-link px-2 link-dark">Sản
                         phẩm</a></li>
                 <li th:if="${session.role == 'admin'}"><a href="/user/index" class="nav-link px-2 link-dark">Người
                         dùng</a></li>
-                <li th:if="${session.role == 'admin'}"><a href="/ordermanagement" class="nav-link px-2 link-dark">QL đơn
-                        hàng</a></li>
+                <li th:if="${session.role == 'admin'}"><a href="/ordermanagement" class="nav-link px-2 link-dark">Quản
+                        lý đơn hàng</a></li>
                 <li th:if="${session.role == 'admin'}"><a href="/statistics" class="nav-link px-2 link-dark">Báo cáo</a>
                 </li>
 
