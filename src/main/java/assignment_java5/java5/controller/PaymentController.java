@@ -13,6 +13,7 @@ import assignment_java5.java5.service.VNPayService;
 import assignment_java5.java5.dao.UserDAO;
 import assignment_java5.java5.dto.OrderStatus;
 import assignment_java5.java5.dto.PaymentStatus;
+import assignment_java5.java5.dto.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class PaymentController {
             return "redirect:/dangnhap";
         }
 
-        if (user.getRole() == true) {
+        if (user.getRole() == Role.ADMIN) {
             redirectAttributes.addFlashAttribute("errorMessage", "Bạn chỉ có quyền quản lý, không thể đặt hàng!");
             return "redirect:/detailedpage/" + productId;
         }

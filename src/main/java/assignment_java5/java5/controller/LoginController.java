@@ -55,7 +55,7 @@ public class LoginController {
             return "views/gdienUsers/dangnhap";
         }
 
-        String role = (user.getRole() != null && user.getRole()) ? "admin" : "user";
+        String role = "user"; // Mặc định là user
 
         // Lưu thông tin vào session
         session.setAttribute("loggedInUser", user);

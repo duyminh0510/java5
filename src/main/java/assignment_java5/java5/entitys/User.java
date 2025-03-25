@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import assignment_java5.java5.dto.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -57,9 +60,14 @@ public class User implements Serializable {
     @Column(name = "address", columnDefinition = "NVARCHAR(1000)")
     private String address;
 
-    @Column(name = "role", nullable = false)
+    // @Column(name = "role", nullable = false)
+    // @Builder.Default
+    // private Boolean role = false;
+
     @Builder.Default
-    private Boolean role = false;
+    @Enumerated(EnumType.STRING) // Lưu dưới dạng chuỗi
+    @Column(nullable = false)
+    private Role role = Role.USER; // Giá trị mặc định
 
     @Column(name = "is_active", nullable = false, columnDefinition = "BIT DEFAULT 1")
     @Builder.Default
