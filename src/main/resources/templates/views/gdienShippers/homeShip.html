@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Dropdown lọc trạng thái -->
-                <form action="/ordermanagement" method="get" class="mb-3">
+                <form action="/orderShip" method="get" class="mb-3">
                     <label for="statusFilter"><strong>Lọc theo trạng
                             thái:</strong></label>
                     <select id="statusFilter" name="status"
@@ -31,18 +31,12 @@
                         <option value
                             th:selected="${selectedStatus == null or selectedStatus == ''}">Tất
                             cả</option>
-                        <option value="PROCESSING"
-                            th:selected="${selectedStatus == 'PROCESSING'}">Đang
-                            chờ xử lý</option>
                         <option value="SHIPPED"
                             th:selected="${selectedStatus == 'SHIPPED'}">Đang
                             giao</option>
                         <option value="COMPLETED"
                             th:selected="${selectedStatus == 'COMPLETED'}">Đã
                             giao</option>
-                        <option value="CANCELED"
-                            th:selected="${selectedStatus == 'CANCELED'}">Đã
-                            hủy</option>
                     </select>
                 </form>
 
@@ -76,23 +70,19 @@
 
                             <!-- Cập nhật trạng thái đơn hàng -->
                             <td>
-                                <form th:action="@{/admin/orders/update-status}"
+                                <form th:action="@{/shipper/orders/update-status}"
                                     method="post">
                                     <input type="hidden" name="orderId"
                                         th:value="${item.id}" />
                                     <select class="form-select" name="status">
-                                        <option value="PROCESSING"
-                                            th:selected="${item.status == 'PROCESSING'}">Đang
-                                            chờ xử lý</option>
+                                
                                         <option value="SHIPPED"
                                             th:selected="${item.status == 'SHIPPED'}">Đang
                                             giao</option>
                                         <option value="COMPLETED"
                                             th:selected="${item.status == 'COMPLETED'}">Đã
                                             giao</option>
-                                        <option value="CANCELED"
-                                            th:selected="${item.status == 'CANCELED'}">Đã
-                                            hủy</option>
+                                        
                                     </select>
                                     <button type="submit"
                                         class="btn btn-danger btn-sm mt-2">Lưu
@@ -103,7 +93,7 @@
                             <!-- Hành động (Xem chi tiết / Xóa) -->
                             <td>
                                 <a
-                                    th:href="@{/admin/orders/{id}(id=${item.id})}"
+                                    th:href="@{/shipper/orders/{id}(id=${item.id})}"
                                     class="btn btn-primary btn-sm">Xem chi
                                     tiết</a>
                             </td>

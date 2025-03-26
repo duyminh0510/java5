@@ -25,6 +25,13 @@ public class LoginController {
         return "views/gdienUsers/dangnhap";
     }
 
+
+    
+
+
+
+
+
     @PostMapping("/dangnhap/form")
     public String login(Model model, HttpServletRequest request, HttpSession session) {
         String name = request.getParameter("name");
@@ -56,6 +63,7 @@ public class LoginController {
         }
 
         String role = "user"; // Mặc định là user
+// <<<<<<< HEAD
 
         if (user.getRole() != null) {
             String roleStr = user.getRole().name().toLowerCase(); // Chuyển Enum thành String
@@ -74,6 +82,8 @@ public class LoginController {
         }
         System.out.println("Rolee"+role);
         System.out.println("Rolee"+user.getRole().name().toLowerCase());
+// =======
+// >>>>>>> feab0ff9f6e2eacf8bcc804b4b897abecba6a8b4
 
         // Lưu thông tin vào session
         session.setAttribute("loggedInUser", user);
@@ -97,7 +107,7 @@ public class LoginController {
         if ("admin".equals(role)) {
             return "redirect:/";
         } else if ("shipper".equals(role)) {
-            return "views/gdienShippers/homeShip";
+            return "redirect:/orderShip";
         } else {
             return "redirect:/";
         }

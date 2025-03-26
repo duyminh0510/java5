@@ -18,7 +18,9 @@ public interface UserDAO extends JpaRepository<User, String> {
 
     User findByEmail(String email);
 
+    
     User findByUsername(String username);
+
 
     @Query("SELECT u.username, SUM(o.totalAmount), MIN(o.createdAt), MAX(o.createdAt) " +
             "FROM Order o " +
