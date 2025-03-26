@@ -2,69 +2,70 @@ package assignment_java5.java5.controller;
 
 import assignment_java5.java5.dao.CartDAO;
 import assignment_java5.java5.dao.CartItemDAO;
+import assignment_java5.java5.dao.ProductDAO;
 import assignment_java5.java5.entitys.Cart;
 import assignment_java5.java5.entitys.CartItem;
 import assignment_java5.java5.entitys.User;
 import assignment_java5.java5.service.CartService;
 
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("/cart")
 public class CartController {
+
     @Autowired
-    private CartService cartService;
+    private CartDAO cartDAO;
 
     @Autowired
     private CartItemDAO cartItemDAO;
 
     @Autowired
-    private CartDAO cartDAO; // Thêm CartDAO để lấy Cart theo User
+    private ProductDAO productDAO;
 
-    // @Autowired
-    // private UserDAO userDAO; // Nếu bạn cần lấy User theo username
+    @Autowired
+    private CartService cartService;
 
+    // ✅ API lấy giỏ hàng
     @GetMapping("/index")
-    public String getCart(Model model, Principal principal, HttpSession session) {
+    public Map<String, Object> getCart(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
 
         if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/cart/index");
-            return "redirect:/dangnhap";
+            return Collections.singletonMap("error", "Vui lòng đăng nhập!");
         }
-        Optional<Cart> cartOpt = cartDAO.findByUser(user);
 
+        Optional<Cart> cartOpt = cartDAO.findByUser(user);
         double totalAmount = 0;
-        List<CartItem> cartItems = Collections.emptyList();
+        List<CartItem> cartItems = new ArrayList<>();
 
         if (cartOpt.isPresent()) {
             Cart cart = cartOpt.get();
             cartItems = cartItemDAO.findByCart(cart);
-            // Tính tổng tiền mặc định (có thể bỏ qua nếu chỉ muốn tính khi chọn sản phẩm)
             for (CartItem item : cartItems) {
                 totalAmount += item.getPrice() * item.getQuantity();
             }
         }
 
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalAmount", totalAmount);
-        return "views/gdienUsers/carts";
+        Map<String, Object> response = new HashMap<>();
+        response.put("cartItems", cartItems);
+        response.put("totalAmount", totalAmount);
+        return response;
     }
 
+    // ✅ API cập nhật tổng tiền
     @PostMapping("/update-total")
-    @ResponseBody
-    public String updateTotal(@RequestParam List<Long> selectedItems) {
+    public Map<String, Object> updateTotal(@RequestParam List<Long> selectedItems) {
         double total = 0;
         for (Long itemId : selectedItems) {
             CartItem item = cartItemDAO.findById(itemId).orElse(null);
@@ -72,50 +73,50 @@ public class CartController {
                 total += item.getPrice() * item.getQuantity();
             }
         }
-        return String.valueOf((long) total); // Trả về số nguyên để tránh lỗi format
+        return Collections.singletonMap("totalAmount", total);
     }
 
-    // số lượng giỏ hàng
     @PostMapping("/update-quantity")
-    @ResponseBody
-    public String updateQuantity(@RequestParam("itemId") Long itemId, @RequestParam("quantity") Long quantity) {
+    public Map<String, Object> updateQuantity(@RequestParam("itemId") Long itemId,
+            @RequestParam("quantity") Long quantity) {
         Optional<CartItem> cartItemOpt = cartItemDAO.findById(itemId);
 
         if (cartItemOpt.isPresent()) {
             CartItem cartItem = cartItemOpt.get();
             if (quantity <= 0) {
                 cartItemDAO.delete(cartItem); // Xóa nếu số lượng về 0
-                return "deleted";
+                return Collections.singletonMap("status", "deleted");
             } else {
                 cartItem.setQuantity(quantity);
                 cartItem.setTotalamount((long) (cartItem.getPrice() * quantity));
 
                 cartItemDAO.save(cartItem);
-                return String.valueOf(cartItem.getTotalamount()); // Trả về tổng tiền mới
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", "updated");
+                response.put("totalAmount", cartItem.getTotalamount());
+                return response;
             }
         }
-        return "error";
+        return Collections.singletonMap("status", "error");
     }
 
+    // ✅ API thêm vào giỏ hàng
     @PostMapping("/add")
-    @ResponseBody
-    public String addToCart(@RequestParam("productId") Integer productId,
+    public Map<String, Object> addToCart(@RequestParam("productId") Integer productId,
             @RequestParam("quantity") Long quantity,
             @RequestParam("size") String size,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
-        // Lấy user từ session
+            HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
 
         if (user == null) {
-            return "Vui lòng bạn đăng nhập để có thể thêm sản phẩm vào giỏ hàng!";
+            return Collections.singletonMap("error", "Vui lòng đăng nhập!");
         }
 
-        if (user.getRole() == true) { // Nếu là admin
-            return "Bạn chỉ có quyền quản lý, không có quyền thêm vào giỏ hàng!";
+        if (user.getRole()) { // Nếu là admin
+            return Collections.singletonMap("error", "Bạn chỉ có quyền quản lý, không được thêm vào giỏ hàng!");
         }
 
         cartService.addToCart(user, productId, size, quantity);
-        return "Sản phẩm đã được thêm vào giỏ hàng!";
+        return Collections.singletonMap("message", "Sản phẩm đã được thêm vào giỏ hàng!");
     }
 }

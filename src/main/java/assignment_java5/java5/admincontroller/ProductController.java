@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
 
 import assignment_java5.java5.dao.CategoryDAO;
 import assignment_java5.java5.dao.ProductDAO;
@@ -52,33 +52,42 @@ public class ProductController {
         return "views/gdienAdmins/products";
     }
 
-    @RequestMapping("/product/edit/{id}")
-    public String edit(Model model, @PathVariable("id") Integer id,
-            RedirectAttributes redirectAttributes) {
-        Optional<Product> optionalProduct = dao.findById(id);
-        if (optionalProduct.isPresent()) {
-            Product item = optionalProduct.get();
-            if (item.getCategory() != null) {
-                model.addAttribute("selectedCategoryId", item.getCategory().getCategoryId());
-            }
-            if (item.getSizeproducts() != null) {
-                List<String> selectedSizes = item.getSizeproducts().stream()
-                        .map(Sizeproduct::getSize)
-                        .collect(Collectors.toList());
-                model.addAttribute("selectedSizes", selectedSizes);
+    // @RequestMapping("/product/edit/{id}")
+    // public String edit(Model model, @PathVariable("id") Integer id,
+    // RedirectAttributes redirectAttributes) {
+    // Optional<Product> optionalProduct = dao.findById(id);
+    // if (optionalProduct.isPresent()) {
+    // Product item = optionalProduct.get();
+    // if (item.getCategory() != null) {
+    // model.addAttribute("selectedCategoryId", item.getCategory().getCategoryId());
+    // }
+    // if (item.getSizeproducts() != null) {
+    // List<String> selectedSizes = item.getSizeproducts().stream()
+    // .map(Sizeproduct::getSize)
+    // .collect(Collectors.toList());
+    // model.addAttribute("selectedSizes", selectedSizes);
 
-            }
-            model.addAttribute("item", item);
-            List<Category> categories = categorydao.findAll();
-            model.addAttribute("categories", categories);
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Sản phẩm không tồn tại!");
-            return "redirect:/product/index";
+    // }
+    // model.addAttribute("item", item);
+    // List<Category> categories = categorydao.findAll();
+    // model.addAttribute("categories", categories);
+    // } else {
+    // redirectAttributes.addFlashAttribute("error", "Sản phẩm không tồn tại!");
+    // return "redirect:/product/index";
+    // }
+    // List<Product> items = dao.findAll();
+    // model.addAttribute("items", items);
+
+    // return "views/gdienAdmins/products";
+    // }
+
+    @GetMapping("/rest/products/{id}")
+    public ResponseEntity<Product> getMethodName(@PathVariable("id") Integer id) {
+        Product product = productService.findById(id);
+        if (product != null) {
+            return ResponseEntity.ok(product);
         }
-        List<Product> items = dao.findAll();
-        model.addAttribute("items", items);
-
-        return "views/gdienAdmins/products";
+        return ResponseEntity.notFound().build();
     }
 
     @RequestMapping("/product/createAndUpdate")

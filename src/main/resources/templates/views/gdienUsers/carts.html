@@ -1,60 +1,74 @@
-<!DOCTYPE html>
-<html lang="en" th:replace="${session.role == 'admin'} 
-    ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
-    : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+<!DOCTYPE html> ~
+<html lang="vi" th:replace="${session.role == 'admin'} 
+          ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
+          : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>carts</title>
+        <title>Giỏ hàng</title>
 
         <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-            integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- Bootstrap JS -->
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
+        <!-- AngularJS -->
         <script
             src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-        <script src="/assets/angular/shopping-cart-app.js"></script>
-
+        <!-- Angular App -->
+        <script th:src="@{/assets/angular/shopping-cart-app.js}"></script>
     </head>
 
-    <body ng-app="shopping-cart-app" ng-controller="shopping-cart-ctrl">
+    <body ng-app="shoppingCartApp" ng-controller="shoppingCartCtrl">
         <main>
-            <div class="cart-container">
-                <h2>Giỏ hàng của bạn</h2>
-
-                <div ng-repeat="item in cartItems" class="cart-item">
-                    <input type="checkbox" ng-model="item.selected"
-                        ng-change="updateTotal()">
-                    <img ng-src="{{item.product.imageUrl}}" alt="Sản phẩm">
-                    <div class="info">
-                        <p>{{ item.product.productName }}</p>
-                        <p>Giá: <strong>{{ item.product.price | currency:'':0
-                                }}đ</strong></p>
-                    </div>
-                    <div class="quantity">
-                        <button ng-click="updateQuantity(item, -1)">-</button>
-                        <span>{{ item.quantity }}</span>
-                        <button ng-click="updateQuantity(item, 1)">+</button>
-                    </div>
-                    <button class="delete-btn"
-                        ng-click="removeItem(item)">Xóa</button>
+            <div class="panel panel-primary">
+                <div class="panel-heading">SHOPPING CART</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Poster</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in cart.items">
+                            <td>{{item.id}}</td>
+                            <td>{{item.imageUrl}}</td>
+                            <td>{{item.productName}}</td>
+                            <td>${{item.price | number : 2}}</td>
+                            <td><input ng-model="item.quantity" type="number"
+                                    min="1"></td>
+                            <td>${{item.quantity*item.price | number : 2}}</td>
+                            <td>
+                                <button ng-click="cart.remove(item.id)"
+                                    class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="panel-footer">
+                    <button ng-click="cart.clear()" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-trash"></i> Clear
+                    </button>
+                    <a th:href="@{/order/checkout}" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-hand-right"></i> Checkout
+                    </a>
                 </div>
-
-                <div class="total">Tổng: <strong>{{ totalAmount | currency:'':0
-                        }}đ</strong></div>
-                <button class="checkout-btn">Mua hàng</button>
             </div>
         </main>
     </body>

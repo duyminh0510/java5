@@ -32,11 +32,15 @@
                     <ul
                         class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li>
-                            <a href="/cart/index"
+                            <!-- <a href="/cart/index"
                                 class="nav-link px-2 link-secondary"><i
                                     class="fa-solid fa-cart-shopping"
                                     style="color: #ea591a;"></i>
-                            </a>
+                            </a> -->
+                            <i class="glyphicon glyphicon-shopping-cart"
+                                style="font-size: 25px; color: orangered;"></i>
+                            <a th:href="@{/cart/view}">{{cart.count}} items x
+                                ${{cart.amount | number : 2}}</a>
                         </li>
                         <li>
                             <a href="/order/history"

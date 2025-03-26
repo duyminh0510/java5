@@ -20,8 +20,13 @@ public class ProductService {
         return productDAO.findByproductNameContainingIgnoreCase(keyword, pageable);
     }
 
+    // public Product findById(Integer id) {
+    // Optional<Product> product = productDAO.findById(id);
+    // return product.orElse(null);
+    // }
+
     public Product findById(Integer id) {
-        Optional<Product> product = productDAO.findById(id);
-        return product.orElse(null);
+        return productDAO.findById(id).orElse(null);
     }
+
 }
