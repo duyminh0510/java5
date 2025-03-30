@@ -1,12 +1,20 @@
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
+            <a th:href="${session.role == 'shipper' ? '/orderShip' : '/'}"
+
+            class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                <img th:src="@{/photos/images.jpg}" width="62" height="62">
+                <span>
+                    <a th:href="${session.role == 'shipper' ? '/orderShip' : '/'}" 
+                    style="text-decoration: none; font-size: 23px; margin-right: 20px;">
+<!-- =======
                 class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
                 <img th:src="@{/photos/images.jpg}" width="62" height="62">
                 <span>
                     <a th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
                         style="text-decoration: none; font-size: 23px; margin-right: 20px;">
+>>>>>>> feab0ff9f6e2eacf8bcc804b4b897abecba6a8b4 -->
                         EMAIENEIT
                     </a>
                 </span>
@@ -25,16 +33,22 @@
                 <li th:if="${session.role == 'admin'}"><a href="/statistics" class="nav-link px-2 link-dark">Báo cáo</a>
                 </li>
 
-                <li th:if="${session.role == 'shipper'}"><a href="/ordermanagement" class="nav-link px-2 link-dark">Quản
+                <li th:if="${session.role == 'shipper'}"><a href="/orderShip" class="nav-link px-2 link-dark">Quản
+                        lý đơn hàng</a></li> 
+<!-- =======
                         lý đơn hàng</a></li>
+>>>>>>> feab0ff9f6e2eacf8bcc804b4b897abecba6a8b4 -->
 
                 <li th:if="${session.role == 'user'}"><a href="/cart/index" class="nav-link px-2 link-secondary">
                         <i class="fa-solid fa-cart-shopping" style="color: #ea591a;"></i></a></li>
                 <li th:if="${session.role == 'user'}"><a href="/order/history" class="nav-link px-2 link-dark">Đơn
                         hàng</a></li>
-                <li th:if="${session.role == 'user'}"><a href="/cart/index" class="nav-link px-2 link-secondary">
-                        <i class="fa-solid fa-cart-shopping" style="color: #ea591a;"></i></a></li>
-                <li th:if="${session.role == 'user'}"><a href="/order/history" class="nav-link px-2 link-dark">Đăng ký
+                <!-- <li th:if="${session.role == 'user'}"><a href="/cart/index" class="nav-link px-2 link-secondary">
+                        <i class="fa-solid fa-cart-shopping" style="color: #ea591a;"></i></a></li> -->
+<!-- <<<<<<< HEAD
+                <li th:if="${session.role == 'user'}"><a href="/order/history" class="nav-link px-2 link-dark">Đăng ký 
+======= -->
+                <li ><a href="/order/history" class="nav-link px-2 link-dark">Đăng ký
                         giao hàng</a></li>
             </ul>
 

@@ -25,6 +25,13 @@ public class LoginController {
         return "views/gdienUsers/dangnhap";
     }
 
+
+    
+
+
+
+
+
     @PostMapping("/dangnhap/form")
     public String login(Model model, HttpServletRequest request, HttpSession session) {
         String name = request.getParameter("name");
@@ -56,6 +63,27 @@ public class LoginController {
         }
 
         String role = "user"; // Mặc định là user
+// <<<<<<< HEAD
+
+        if (user.getRole() != null) {
+            String roleStr = user.getRole().name().toLowerCase(); // Chuyển Enum thành String
+            
+            switch (roleStr) {
+                case "admin":
+                    role = "admin";
+                    break;
+                case "shipper":
+                    role = "shipper";
+                    break;
+                default:
+                    role = "user";
+                    break;
+            }
+        }
+        System.out.println("Rolee"+role);
+        System.out.println("Rolee"+user.getRole().name().toLowerCase());
+// =======
+// >>>>>>> feab0ff9f6e2eacf8bcc804b4b897abecba6a8b4
 
         // Lưu thông tin vào session
         session.setAttribute("loggedInUser", user);
@@ -68,17 +96,34 @@ public class LoginController {
 
         String redirectUri = (String) session.getAttribute("redirectAfterLogin");
 
+        System.out.println("redirectUri: " + redirectUri);
+
         if (redirectUri != null && !redirectUri.equals("/dangnhap")) {
             session.removeAttribute("redirectAfterLogin");
             return "redirect:" + redirectUri;
         }
 
-        return role.equals("admin") ? "redirect:/" : "redirect:/";
+        // Điều hướng dựa trên vai trò
+        if ("admin".equals(role)) {
+            return "redirect:/";
+        } else if ("shipper".equals(role)) {
+            return "redirect:/orderShip";
+        } else {
+            return "redirect:/";
+        }
+
     }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
+        logger.info("Logging out user: {}", session.getAttribute("username"));
+        
+        session.removeAttribute("loggedInUser");
+        session.removeAttribute("username");
+        session.removeAttribute("role");
         session.invalidate();
+        
         return "redirect:/dangnhap";
     }
+
 }
