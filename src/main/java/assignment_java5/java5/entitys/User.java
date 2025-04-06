@@ -65,9 +65,9 @@ public class User implements Serializable {
     // private Boolean role = false;
 
     @Builder.Default
-    @Enumerated(EnumType.STRING) // Lưu dưới dạng chuỗi
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER; // Giá trị mặc định
+    private Role role = Role.USER;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "BIT DEFAULT 1")
     @Builder.Default

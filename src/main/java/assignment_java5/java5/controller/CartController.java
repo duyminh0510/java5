@@ -2,7 +2,6 @@ package assignment_java5.java5.controller;
 
 import assignment_java5.java5.dao.CartDAO;
 import assignment_java5.java5.dao.CartItemDAO;
-import assignment_java5.java5.dto.Role;
 import assignment_java5.java5.entitys.Cart;
 import assignment_java5.java5.entitys.CartItem;
 import assignment_java5.java5.entitys.User;
@@ -31,10 +30,7 @@ public class CartController {
     private CartItemDAO cartItemDAO;
 
     @Autowired
-    private CartDAO cartDAO; // Thêm CartDAO để lấy Cart theo User
-
-    // @Autowired
-    // private UserDAO userDAO; // Nếu bạn cần lấy User theo username
+    private CartDAO cartDAO;
 
     @GetMapping("/index")
     public String getCart(Model model, Principal principal, HttpSession session) {
@@ -112,7 +108,7 @@ public class CartController {
             return "Vui lòng bạn đăng nhập để có thể thêm sản phẩm vào giỏ hàng!";
         }
 
-        if (user.getRole() == Role.ADMIN) { // Nếu là admin
+        if (user.getRole().equals("ADMIN")) { // Nếu là admin
             return "Bạn chỉ có quyền quản lý, không có quyền thêm vào giỏ hàng!";
         }
 
