@@ -24,6 +24,14 @@ public class OrderService {
     @Autowired
     private OrderDetailDAO orderdetaildao;
 
+    // ✅ Thêm phương thức này để `PaymentController` có thể sử dụng
+    public Order createOrderForUser(User user) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus("PENDING");
+        return orderdao.save(order);
+    }
+
     public Order createOrder(User user, List<CartItem> cartItems) {
         Order order = new Order();
         order.setUser(user);
@@ -37,7 +45,6 @@ public class OrderService {
             orderDetail.setOrder(order);
             orderDetail.setProduct(cartItem.getProduct());
             orderDetail.setQuantity(cartItem.getQuantity());
-            // orderDetail.setPrice(cartItem.getPrice());
             orderDetail.setPrice(cartItem.getProduct().getPrice());
             orderdetaildao.save(orderDetail);
 
@@ -55,6 +62,19 @@ public class OrderService {
 
     public Optional<Order> getOrderById(Long orderId) {
         return orderdao.findById(orderId);
+    }
+
+    // ✅ Thêm phương thức này để cập nhật trạng thái đơn hàng từ `PaymentController`
+    public void updateOrderStatus(Long orderId, String status) {
+        Order order = orderdao.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng!"));
+        order.setStatus(status);
+        orderdao.save(order);
+    }
+
+    // ✅ Thêm phương thức `findById(Long orderId)`
+    public Order findById(Long orderId) {
+        return orderdao.findById(orderId).orElse(null);
     }
 
     // order admin quản lý//////////////////////////////////////////////////

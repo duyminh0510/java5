@@ -81,6 +81,7 @@ public class ProductController {
         return "views/gdienAdmins/products";
     }
 
+    @SuppressWarnings("null")
     @RequestMapping("/product/createAndUpdate")
     public String uploadProduct(RedirectAttributes redirectAttributes,
             @ModelAttribute Product product,
