@@ -7,7 +7,7 @@ main {
     margin-top: 30px;
 }
 
-.cart-container {
+.cart.cart-container {
     width: 70%;
     background: #fff;
     padding: 20px;
@@ -15,14 +15,14 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.cart-container h2 {
+.cart.cart-container h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: bold;
 }
 
-.cart-item {
+.cart.cart-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,29 +30,29 @@ main {
     border-bottom: 1px solid #ddd;
 }
 
-.cart-item img {
+.cart.cart-item img {
     width: 80px;
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
 }
 
-.info {
+.cart.info {
     flex-grow: 1;
     margin-left: 15px;
 }
 
-.info p {
+.cart.info p {
     margin: 5px 0;
     font-size: 16px;
 }
 
-.quantity {
+.cart.quantity {
     display: flex;
     align-items: center;
 }
 
-.quantity button {
+.cart.quantity button {
     width: 30px;
     height: 30px;
     border: none;
@@ -64,12 +64,12 @@ main {
     margin: 0 5px;
 }
 
-.quantity span {
+.cart.quantity span {
     font-size: 18px;
     font-weight: bold;
 }
 
-.delete-btn {
+.cart.delete-btn {
     background: #dc3545;
     color: #fff;
     border: none;
@@ -78,14 +78,14 @@ main {
     border-radius: 5px;
 }
 
-.total {
+.cart.total {
     text-align: right;
     font-size: 18px;
     font-weight: bold;
     margin-top: 20px;
 }
 
-.checkout-btn {
+.cart.checkout-btn {
     display: block;
     width: 15%;
     background: #28a745;
@@ -100,7 +100,7 @@ main {
     margin-left: 662px;
 }
 
-.cart-item .select-item {
+.cart.cart-item .select-item {
     width: 20px;
     height: 20px;
     margin-right: 10px;

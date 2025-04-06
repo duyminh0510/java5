@@ -69,8 +69,9 @@
                                 </div>
 
                                 <button class="btn" onclick="addToCart(this)"
-                                    th:data-product-id="${item.productId}">Thêm
-                                    Vào Giỏ Hàng</button>
+                                    th:data-product-id="${item.productId}"><i
+                                        class="fa-solid fa-cart-plus"
+                                        style="color: #db570f;"></i></button>
                                 <a
                                     th:href="@{/payment/placeanorder(productId=${item.productId}, quantity=${1}, size=${sizes[0].size})}"
                                     class="btn" style="text-decoration: none;">

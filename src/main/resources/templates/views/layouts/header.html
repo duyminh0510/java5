@@ -1,62 +1,91 @@
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
+        <div
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a
+                th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
                 class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
                 <img th:src="@{/photos/images.jpg}" width="62" height="62">
                 <span>
-                    <a th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
+                    <a
+                        th:href="${session.role == 'shipper' ? '/gdienShippers/homeShip' : '/'}"
                         style="text-decoration: none; font-size: 23px; margin-right: 20px;">
                         EMAIENEIT
                     </a>
                 </span>
             </a>
 
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li th:if="${session.role == 'admin'}"><a href="/category/index" class="nav-link px-2 link-dark">Danh
+            <ul
+                class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li th:if="${session.role == 'admin'}"><a href="/category/index"
+                        class="nav-link px-2 link-dark">Danh
                         mục</a></li>
-                <li th:if="${session.role == 'admin'}"><a href="/product/index" class="nav-link px-2 link-dark">Sản
+                <li th:if="${session.role == 'admin'}"><a href="/product/index"
+                        class="nav-link px-2 link-dark">Sản
                         phẩm</a></li>
-                <li th:if="${session.role == 'admin'}"><a href="/user/index" class="nav-link px-2 link-dark">Người
+                <li th:if="${session.role == 'admin'}"><a href="/user/index"
+                        class="nav-link px-2 link-dark">Người
                         dùng</a></li>
-                <li th:if="${session.role == 'admin'}"><a href="/ordermanagement" class="nav-link px-2 link-dark">Quản
+                <li th:if="${session.role == 'admin'}"><a
+                        href="/ordermanagement"
+                        class="nav-link px-2 link-dark">Quản
                         lý đơn hàng</a></li>
-                <li th:if="${session.role == 'admin'}"><a href="/statistics" class="nav-link px-2 link-dark">Báo cáo</a>
+                <li th:if="${session.role == 'admin'}"><a href="/statistics"
+                        class="nav-link px-2 link-dark">Báo cáo</a>
                 </li>
 
-                <li th:if="${session.role == 'shipper'}"><a href="/ordermanagement" class="nav-link px-2 link-dark">Quản
+                <li th:if="${session.role == 'shipper'}"><a
+                        href="/ordermanagement"
+                        class="nav-link px-2 link-dark">Quản
                         lý đơn hàng</a></li>
 
-                <li th:if="${session.role == 'user'}"><a href="/cart/index" class="nav-link px-2 link-secondary">
-                        <i class="fa-solid fa-cart-shopping" style="color: #ea591a;"></i></a></li>
-                <li th:if="${session.role == 'user'}"><a href="/order/history" class="nav-link px-2 link-dark">Đơn
+                <li th:if="${session.role == 'user'}">
+                    <a href="/cart/index" class="nav-link px-2 link-secondary">
+                        <i class="fa-solid fa-cart-shopping"
+                            style="color: #db570f;"></i> </a>
+                </li>
+                <li th:if="${session.role == 'user'}"><a href="/order/history"
+                        class="nav-link px-2 link-dark">Đơn
                         hàng</a></li>
-                <li th:if="${session.role == 'user'}"><a href="/cart/index" class="nav-link px-2 link-secondary">
-                        <i class="fa-solid fa-cart-shopping" style="color: #ea591a;"></i></a></li>
-                <li th:if="${session.role == 'user'}"><a href="/order/history" class="nav-link px-2 link-dark">Đăng ký
+                <li th:if="${session.role == 'user'}">
+                    <a href="/cart/index" class="nav-link px-2 link-secondary">
+                        <i class="fa-solid fa-cart-shopping"
+                            style="color: #ea591a;"></i></a>
+                </li>
+                <li th:if="${session.role == 'user'}"><a href="/order/history"
+                        class="nav-link px-2 link-dark">Đăng ký
                         giao hàng</a></li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" th:action="@{/product/search}" method="get">
-                <input type="search" class="form-control" name="keyword" placeholder="Search..." aria-label="Search">
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+                th:action="@{/product/search}" method="get">
+                <input type="search" class="form-control" name="keyword"
+                    placeholder="Search..." aria-label="Search">
             </form>
 
             <div class="dropdown text-end">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#"
+                    class="d-block link-dark text-decoration-none dropdown-toggle"
+                    id="dropdownUser1" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <i class="fa-solid fa-user"></i>
                     <span th:text="${session.username} ?: 'Khách'"></span>
                 </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li th:if="${session.username}"><a class="dropdown-item" href="/doimatkhau">Đổi mật khẩu</a></li>
-                    <li th:if="${session.username}"><a class="dropdown-item" href="/hosocanhan">Chỉnh sửa hồ sơ</a></li>
+                <ul class="dropdown-menu text-small"
+                    aria-labelledby="dropdownUser1">
+                    <li th:if="${session.username}"><a class="dropdown-item"
+                            href="/doimatkhau">Đổi mật khẩu</a></li>
+                    <li th:if="${session.username}"><a class="dropdown-item"
+                            href="/hosocanhan">Chỉnh sửa hồ sơ</a></li>
                     <li th:if="${session.username}">
                         <hr class="dropdown-divider">
                     </li>
-                    <li th:if="${session.username}"><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
-                    <li th:unless="${session.username}"><a class="dropdown-item" href="/dangnhap">Đăng nhập</a></li>
-                    <li th:unless="${session.username}"><a class="dropdown-item" href="/dangky">Đăng ký</a></li>
+                    <li th:if="${session.username}"><a class="dropdown-item"
+                            href="/logout">Đăng xuất</a></li>
+                    <li th:unless="${session.username}"><a class="dropdown-item"
+                            href="/dangnhap">Đăng nhập</a></li>
+                    <li th:unless="${session.username}"><a class="dropdown-item"
+                            href="/dangky">Đăng ký</a></li>
                 </ul>
             </div>
         </div>
