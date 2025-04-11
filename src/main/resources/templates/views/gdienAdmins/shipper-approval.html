@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+    th:replace="~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <title>Duyệt Shipper</title>
+    </head>
+
+    <body>
+        <main>
+            <div class="container mt-5">
+                <h3>Danh sách shipper chờ duyệt</h3>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>SĐT</th>
+                            <th>Khu vực</th>
+                            <th>Ảnh CCCD</th>
+                            <th>GPLX</th>
+                            <th>Cà vẹt xe</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="shipper : ${pendingShippers}">
+                            <td th:text="${shipper.fullName}"></td>
+                            <td th:text="${shipper.phoneNumber}"></td>
+                            <td th:text="${shipper.area}"></td>
+                            <td><a th:href="${shipper.cccdImagePath}"
+                                    target="_blank">Xem</a></td>
+                            <td><a th:href="${shipper.licenseImagePath}"
+                                    target="_blank">Xem</a></td>
+                            <td><a th:href="${shipper.cavatxeImagePath}"
+                                    target="_blank">Xem</a></td>
+                            <td>
+                                <form
+                                    th:action="@{'/admin/shipper/approve/' + ${shipper.id}}"
+                                    method="post" style="display:inline-block">
+                                    <button
+                                        class="btn btn-success btn-sm">Duyệt</button>
+                                </form>
+                                <form
+                                    th:action="@{'/admin/shipper/reject/' + ${shipper.id}}"
+                                    method="post" style="display:inline-block">
+                                    <button class="btn btn-danger btn-sm">Từ
+                                        chối</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+
+</html>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +20,13 @@ public class HomeController {
 
     @Autowired
     private CategoryDAO categoryDAO; // Giả sử bạn có CategoryDAO để lấy danh sách danh mục
+
+    @ModelAttribute
+    public void setDefaultSessionRole(HttpSession session) {
+        if (session.getAttribute("role") == null) {
+            session.setAttribute("role", null);
+        }
+    }
 
     @RequestMapping("/")
     public String home(Model model, HttpSession session,

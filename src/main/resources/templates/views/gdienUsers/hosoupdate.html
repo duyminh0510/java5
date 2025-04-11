@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="${session.role == 'admin'} 
-    ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
-    : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+<html lang="en" th:replace="
+        ${session.role} == 'SHIPPER' 
+        ? ~{/views/gdienShippers/templateshipper.html::view(~{::main}, ~{::title})} 
+        : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}
+    ">
 
     <head>
         <title>capnhattk</title>

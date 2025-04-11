@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="${session.role == 'admin'} 
-        ? ~{/views/gdienAdmins/templateadmin.html::view(~{::main}, ~{::title})} 
-        : ~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
+<html lang="en"
+    th:replace="~{/views/gdienUsers/template.html::view(~{::main}, ~{::title})}">
 
     <head>
         <meta charset="UTF-8">
@@ -69,9 +68,8 @@
                                 </div>
 
                                 <button class="btn" onclick="addToCart(this)"
-                                    th:data-product-id="${item.productId}"><i
-                                        class="fa-solid fa-cart-plus"
-                                        style="color: #db570f;"></i></button>
+                                    th:data-product-id="${item.productId}">Thêm
+                                    Vào Giỏ Hàng</button>
                                 <a
                                     th:href="@{/payment/placeanorder(productId=${item.productId}, quantity=${1}, size=${sizes[0].size})}"
                                     class="btn" style="text-decoration: none;">

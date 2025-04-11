@@ -1,0 +1,48 @@
+<header class="bg-white shadow-sm border-bottom">
+    <div class="container-fluid">
+        <div
+            class="d-flex justify-content-between align-items-center px-4 py-2">
+            <!-- Logo hoặc tên trang -->
+            <a th:href="@{/shipperpage/home}" style="text-decoration: none;">
+                <div class="d-flex align-items-center">
+                    <img th:src="@{/photos/images.jpg}" width="62" height="62">
+                    <h5 class="mb-0 fw-bold text-primary">EMAIENEIT</h5>
+                </div>
+            </a>
+
+            <!-- Phần tài khoản -->
+            <div class="d-flex align-items-center">
+                <span class="me-3 fw-bold text-secondary">
+                    👋 Chào mừng, <span
+                        th:text="${session.username}">Shipper</span>
+                </span>
+
+                <div class="dropdown">
+                    <a href="#"
+                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                        role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Tài khoản
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="/doimatkhau">🔐 Đổi
+                                mật khẩu</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/hosocanhan">👤 Chỉnh
+                                sửa hồ sơ</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger"
+                                href="/logout">🚪 Đăng xuất</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

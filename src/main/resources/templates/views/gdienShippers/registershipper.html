@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"
+    th:replace="~{/views/gdienShippers/templateshipper.html::view(~{::main}, ~{::title})}">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Đăng ký Shipper</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://kit.fontawesome.com/8f4b48a345.js"
+            crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <main>
+            <div class="container d-flex justify-content-center mt-5">
+                <div class="card shadow p-4"
+                    style="max-width: 700px; width: 100%; border-radius: 15px;">
+                    <div class="card-header bg-primary text-white rounded">
+                        <h4 class="mb-0 text-center">
+                            <i class="fa-solid fa-motorcycle me-2"></i>Đăng ký
+                            trở thành Shipper
+                        </h4>
+                    </div>
+
+                    <!-- THÔNG BÁO -->
+                    <div th:if="${successMessage}"
+                        class="alert alert-success alert-dismissible fade show mt-3"
+                        role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i>
+                        <span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${errorMessage}"
+                        class="alert alert-danger alert-dismissible fade show mt-3"
+                        role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                        <span th:text="${errorMessage}"></span>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- FORM -->
+                    <form action="/shipper/register" method="post"
+                        enctype="multipart/form-data" id="shipperForm"
+                        class="mt-4">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Họ
+                                tên</label>
+                            <input type="text" class="form-control"
+                                id="fullName" name="fullName" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Số điện
+                                thoại</label>
+                            <input type="text" class="form-control"
+                                id="phoneNumber" name="phoneNumber" required>
+                        </div>
+
+                        <!-- Khu vực hoạt động -->
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="province" class="form-label">Tỉnh /
+                                    Thành phố</label>
+                                <select class="form-select" id="province"
+                                    name="provinceCode" required>
+                                    <option value>-- Chọn Tỉnh / Thành phố
+                                        --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="district" class="form-label">Quận /
+                                    Huyện</label>
+                                <select class="form-select" id="district"
+                                    name="districtCode" required>
+                                    <option value>-- Chọn Quận / Huyện
+                                        --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="ward" class="form-label">Phường /
+                                    Xã</label>
+                                <select class="form-select" id="ward" required>
+                                    <option value>-- Chọn Phường / Xã
+                                        --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="area" id="fullArea">
+
+                        <div class="mb-3">
+                            <label for="cccdImage" class="form-label">Ảnh
+                                CCCD</label>
+                            <input type="file" class="form-control"
+                                id="cccdImage" name="cccdImage" accept="image/*"
+                                required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="licenseImage" class="form-label">Ảnh
+                                giấy phép lái xe</label>
+                            <input type="file" class="form-control"
+                                id="licenseImage" name="licenseImage"
+                                accept="image/*" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cavatxeImage" class="form-label">Ảnh cà
+                                vẹt xe</label>
+                            <input type="file" class="form-control"
+                                id="cavatxeImage" name="cavatxeImage"
+                                accept="image/*" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Gửi
+                                đăng ký
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const provinceSelect = document.getElementById("province");
+                const districtSelect = document.getElementById("district");
+                const wardSelect = document.getElementById("ward");
+
+                // Load tỉnh
+                fetch("/api/proxy/provinces")
+                    .then(res => res.json())
+                    .then(provinces => {
+                        provinces.forEach(p => {
+                            const opt = document.createElement("option");
+                            opt.value = p.code;
+                            opt.textContent = p.name;
+                            provinceSelect.appendChild(opt);
+                        });
+                    });
+
+                // Khi chọn tỉnh → load quận
+                provinceSelect.addEventListener("change", function() {
+                    const provinceCode = this.value;
+                    if (!provinceCode) return;
+
+                    fetch(`/api/proxy/province/${provinceCode}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            districtSelect.innerHTML = '<option value="">-- Chọn Quận / Huyện --</option>';
+                            data.districts.forEach(d => {
+                                const opt = document.createElement("option");
+                                opt.value = d.code;
+                                opt.textContent = d.name;
+                                districtSelect.appendChild(opt);
+                            });
+
+                            // Reset ward
+                            wardSelect.innerHTML = '<option value="">-- Chọn Phường / Xã --</option>';
+                        });
+                });
+
+                // Khi chọn quận → load phường
+                districtSelect.addEventListener("change", function() {
+                    const districtCode = this.value;
+                    if (!districtCode) return;
+
+                    fetch(`/api/proxy/district/${districtCode}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            wardSelect.innerHTML = '<option value="">-- Chọn Phường / Xã --</option>';
+                            data.wards.forEach(w => {
+                                const opt = document.createElement("option");
+                                opt.value = w.name;
+                                opt.textContent = w.name;
+                                wardSelect.appendChild(opt);
+                            });
+                        });
+                });
+
+                // Khi chọn phường → cập nhật area đầy đủ
+                wardSelect.addEventListener("change", updateFullArea);
+
+                function updateFullArea() {
+                    const provinceText = provinceSelect.options[provinceSelect.selectedIndex] ?
+                        provinceSelect.options[provinceSelect.selectedIndex].text :
+                        "";
+
+                    const districtText = districtSelect.options[districtSelect.selectedIndex] ?
+                        districtSelect.options[districtSelect.selectedIndex].text :
+                        "";
+
+                    const wardText = wardSelect.options[wardSelect.selectedIndex] ?
+                        wardSelect.options[wardSelect.selectedIndex].text :
+                        "";
+
+                    const fullAreaInput = document.getElementById("fullArea");
+                    fullAreaInput.value = `${wardText}, ${districtText}, ${provinceText}`.trim();
+                }
+            });
+        </script>
+
+        </main>
+
+    </body>
+
+</html>

@@ -55,7 +55,8 @@ public class LoginController {
             return "views/gdienUsers/dangnhap";
         }
 
-        String role = "user"; // Mặc định là user
+        String role = user.getRole().toString();
+        session.setAttribute("role", role);
 
         // Lưu thông tin vào session
         session.setAttribute("loggedInUser", user);
@@ -73,7 +74,13 @@ public class LoginController {
             return "redirect:" + redirectUri;
         }
 
-        return role.equals("admin") ? "redirect:/" : "redirect:/";
+        if (role.equals("ADMIN")) {
+            return "redirect:/";
+        } else if (role.equals("SHIPPER")) {
+            return "redirect:/shipperpage/home";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @RequestMapping("/logout")

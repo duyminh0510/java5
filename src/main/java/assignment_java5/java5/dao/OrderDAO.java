@@ -18,4 +18,6 @@ public interface OrderDAO extends JpaRepository<Order, Long> {
 
     List<Order> findByUserAndStatus(User user, String status);
 
+    List<Order> findByStatusIn(List<String> statuses);
+
 }
