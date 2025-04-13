@@ -57,8 +57,8 @@ public class AdminShipperController {
             @PathVariable("id") Long id) {
         Shipper shipper = shipperDAO.findById(id).orElse(null);
         if (shipper != null) {
-            shipper.setStatus(Status.REJECTED);
-            shipperDAO.save(shipper);
+
+            shipperDAO.delete(shipper);
         }
         return "redirect:/admin/shipper/pending";
     }

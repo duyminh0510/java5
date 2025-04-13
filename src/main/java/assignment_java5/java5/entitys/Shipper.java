@@ -16,6 +16,8 @@ public class Shipper {
     private Long id;
 
     private String fullName;
+    private String email;
+    private String password;
     private String phoneNumber;
     private String area; // Khu vực hoạt động
 
@@ -34,5 +36,5 @@ public class Shipper {
     @Enumerated(EnumType.STRING)
 
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private Role role = Role.SHIPPER;
 }

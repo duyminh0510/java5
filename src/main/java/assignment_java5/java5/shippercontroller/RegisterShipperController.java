@@ -27,6 +27,7 @@ public class RegisterShipperController {
 
     @RequestMapping("/registershipper")
     public String requestMethodName(Model model) {
+        model.addAttribute("newshipper", new Shipper());
         return "views/gdienShippers/registershipper";
 
     }
@@ -35,6 +36,8 @@ public class RegisterShipperController {
     public String requestMethodName(Model model,
             @RequestParam("fullName") String fullName,
             @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
             @RequestParam("area") String area,
             @RequestParam("cccdImage") MultipartFile cccdImage,
             @RequestParam("licenseImage") MultipartFile licenseImage,
@@ -48,6 +51,8 @@ public class RegisterShipperController {
                     .fullName(fullName)
                     .phoneNumber(phoneNumber)
                     .area(area)
+                    .email(email)
+                    .password(password)
                     .cccdImagePath(cccdUrl)
                     .licenseImagePath(licenseUrl)
                     .cavatxeImagePath(cavatxeUrl)

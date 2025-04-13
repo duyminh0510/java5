@@ -9,4 +9,6 @@ import assignment_java5.java5.entitys.Shipper.Status;
 
 public interface ShipperDAO extends JpaRepository<Shipper, Long> {
     List<Shipper> findByStatus(Status status);
+
+    Shipper findByPhoneNumberOrEmail(String phoneNumber, String email);
 }

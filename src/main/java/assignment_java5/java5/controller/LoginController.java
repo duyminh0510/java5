@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import assignment_java5.java5.dao.ShipperDAO;
 import assignment_java5.java5.dao.UserDAO;
+import assignment_java5.java5.entitys.Shipper;
 import assignment_java5.java5.entitys.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +22,9 @@ public class LoginController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private ShipperDAO shipperDAO;
 
     @RequestMapping("/dangnhap")
     public String loginPage() {
@@ -40,47 +46,73 @@ public class LoginController {
         }
 
         User user = userDAO.findByPhoneOrEmail(name, name);
-        if (user == null) {
+        Shipper shipper = shipperDAO.findByPhoneNumberOrEmail(name, name);
+
+        if (user == null && shipper == null) {
             model.addAttribute("error", "Tài khoản không tồn tại!");
             return "views/gdienUsers/dangnhap";
         }
 
-        if (!user.getPassword().equals(password)) {
-            model.addAttribute("error", "Mật khẩu không chính xác!");
-            return "views/gdienUsers/dangnhap";
+        if (user != null) {
+            if (!user.getPassword().equals(password)) {
+                model.addAttribute("error", "Mật khẩu không chính xác!");
+                return "views/gdienUsers/dangnhap";
+            }
+
+            if (!user.isActive()) {
+                model.addAttribute("error", "Tài khoản đã bị vô hiệu hóa!");
+                return "views/gdienUsers/dangnhap";
+            }
+
+            String role = user.getRole().toString();
+            session.setAttribute("role", role);
+            session.setAttribute("loggedInUser", user);
+            session.setAttribute("username", user.getUsername());
+
+            logger.info("User logged in: {}", user.getUsername());
+            logger.info("Assigned role: {}", role);
+
+            // Check redirect after login
+            String redirectUri = (String) session.getAttribute("redirectAfterLogin");
+            if (redirectUri != null && !redirectUri.equals("/dangnhap")) {
+                session.removeAttribute("redirectAfterLogin");
+                return "redirect:" + redirectUri;
+            }
+
+            if (role.equals("ADMIN")) {
+                return "redirect:/";
+            } else if (role.equals("SHIPPER")) {
+                return "redirect:/shipperpage/home";
+            } else {
+                return "redirect:/";
+            }
         }
 
-        if (!user.isActive()) {
-            model.addAttribute("error", "Tài khoản đã bị vô hiệu hóa!");
-            return "views/gdienUsers/dangnhap";
+        if (shipper != null) {
+            if (!shipper.getPassword().equals(password)) {
+                model.addAttribute("error", "Mật khẩu không chính xác!");
+                return "views/gdienUsers/dangnhap";
+            }
+
+            String role = shipper.getRole().toString();
+            session.setAttribute("role", role);
+            session.setAttribute("loggedInUser", shipper);
+            session.setAttribute("username", shipper.getFullName());
+
+            logger.info("Shipper logged in: {}", shipper.getEmail());
+            logger.info("Assigned role: {}", role);
+
+            String redirectUri = (String) session.getAttribute("redirectAfterLogin");
+            if (redirectUri != null && !redirectUri.equals("/dangnhap")) {
+                session.removeAttribute("redirectAfterLogin");
+                return "redirect:" + redirectUri;
+            }
+
+            return "redirect:/shipper";
         }
 
-        String role = user.getRole().toString();
-        session.setAttribute("role", role);
-
-        // Lưu thông tin vào session
-        session.setAttribute("loggedInUser", user);
-        session.setAttribute("username", user.getUsername()); // Đảm bảo tồn tại
-        session.setAttribute("role", role);
-
-        logger.info("User logged in: {}", user.getUsername());
-        logger.info("Assigned role: {}", role);
-        logger.info("Session saved - username: {}", session.getAttribute("username"));
-
-        String redirectUri = (String) session.getAttribute("redirectAfterLogin");
-
-        if (redirectUri != null && !redirectUri.equals("/dangnhap")) {
-            session.removeAttribute("redirectAfterLogin");
-            return "redirect:" + redirectUri;
-        }
-
-        if (role.equals("ADMIN")) {
-            return "redirect:/";
-        } else if (role.equals("SHIPPER")) {
-            return "redirect:/shipperpage/home";
-        } else {
-            return "redirect:/";
-        }
+        model.addAttribute("error", "Đăng nhập thất bại!");
+        return "views/gdienUsers/dangnhap";
     }
 
     @RequestMapping("/logout")

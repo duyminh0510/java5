@@ -16,14 +16,14 @@ import assignment_java5.java5.entitys.Order;
 import assignment_java5.java5.service.OrderService;
 
 @Controller
-public class HomeShipController {
+public class OrderShipperController {
     @Autowired
     private OrderDAO orderdao;
 
     @Autowired
     private OrderService orderService;
 
-    @RequestMapping("/shipperpage/home")
+    @RequestMapping("/shipper/order")
     public String orderManagement(Model model,
             @RequestParam(value = "status", required = false) String status) {
         List<Order> items;
@@ -38,24 +38,24 @@ public class HomeShipController {
         return "views/gdienShippers/shipper-dashboard";
     }
 
-    @RequestMapping("/shipper/orders/{id}")
+    @RequestMapping("/shipper/order/{id}")
     public String viewOrderDetail(@PathVariable Long id, Model model) {
         Order order = orderdao.findById(id).orElse(null);
 
         if (order == null) {
-            return "redirect:/orderShip";
+            return "redirect:/shipper/order";
         }
         model.addAttribute("order", order);
 
         return "views/gdienShippers/order-detail";
     }
 
-    @RequestMapping("/shipper/orders/update-status")
+    @RequestMapping("/shipper/order/update-status")
     public String requestMethodName(@RequestParam("orderId") Long orderId,
             @RequestParam("status") OrderStatus status,
             RedirectAttributes redirectAttributes) {
         orderService.updateStatus(orderId, status);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái thành công!");
-        return "redirect:/orderShip";
+        return "redirect:/shipper/order";
     }
 }

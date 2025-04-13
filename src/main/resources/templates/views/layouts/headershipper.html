@@ -13,8 +13,14 @@
             <!-- Phần tài khoản -->
             <div class="d-flex align-items-center">
                 <span class="me-3 fw-bold text-secondary">
-                    👋 Chào mừng, <span
-                        th:text="${session.username}">Shipper</span>
+                    👋
+                    <span th:if="${session.username != null}">
+                        Chào mừng, <span
+                            th:text="${session.username}">Shipper</span>
+                    </span>
+                    <span th:if="${session.username == null}">
+                        Chào mừng bạn
+                    </span>
                 </span>
 
                 <div class="dropdown">
@@ -25,20 +31,29 @@
                         Tài khoản
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
+                        <li th:if="${session.username}">
                             <a class="dropdown-item" href="/doimatkhau">🔐 Đổi
                                 mật khẩu</a>
                         </li>
-                        <li>
+                        <li th:if="${session.username}">
                             <a class="dropdown-item" href="/hosocanhan">👤 Chỉnh
                                 sửa hồ sơ</a>
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item text-danger"
+
+                        <li th:if="${session.username}">
+                            <a class="dropdown-item text-dange"
                                 href="/logout">🚪 Đăng xuất</a>
+                        </li>
+
+                        <!-- Nếu chưa đăng nhập -->
+                        <li th:unless="${session.username}">
+                            <a class="dropdown-item" href="/dangnhap">Đăng
+                                nhập</a>
+                        </li>
+                        <li th:unless="${session.username}">
+                            <a class="dropdown-item"
+                                href="/registershipper">Đăng ký
+                                giao hàng</a>
                         </li>
                     </ul>
                 </div>
