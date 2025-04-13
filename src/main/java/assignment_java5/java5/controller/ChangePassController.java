@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import assignment_java5.java5.dao.UserDAO;
+import assignment_java5.java5.dao.ShipperDAO;
 import assignment_java5.java5.dto.ChangePasswordDTO;
 import assignment_java5.java5.entitys.User;
+import assignment_java5.java5.entitys.Shipper;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -19,20 +21,28 @@ import jakarta.validation.Valid;
 public class ChangePassController {
 
     @Autowired
-    private UserDAO userdao;
+    private UserDAO userDAO;
+
+    @Autowired
+    private ShipperDAO shipperDAO;
 
     @RequestMapping("/doimatkhau")
-    public String requestMethodName(Model model, HttpSession session,
+    public String showChangePasswordForm(Model model, HttpSession session,
             RedirectAttributes redirectAttributes) {
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
+        Object loggedIn = session.getAttribute("loggedInUser");
+
+        if (loggedIn == null) {
             session.setAttribute("redirectAfterLogin", "/doimatkhau");
             return "redirect:/dangnhap";
         }
+
+        if (!model.containsAttribute("changePasswordDTO")) {
+            model.addAttribute("changePasswordDTO", new ChangePasswordDTO());
+        }
+
         return "views/gdienUsers/doimatkhau";
     }
 
-    @SuppressWarnings("null")
     @PostMapping("/doimatkhau/update")
     public String changePassword(
             @Valid @ModelAttribute("changePasswordDTO") ChangePasswordDTO dto,
@@ -40,22 +50,19 @@ public class ChangePassController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-        User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) {
+        Object loggedIn = session.getAttribute("loggedInUser");
+
+        if (loggedIn == null) {
             redirectAttributes.addFlashAttribute("error", "Bạn chưa đăng nhập!");
             session.setAttribute("redirectAfterLogin", "/doimatkhau");
             return "redirect:/dangnhap";
         }
 
-        // Kiểm tra lỗi validation
+        // Kiểm tra lỗi validate
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", result.getFieldError().getDefaultMessage());
-            return "redirect:/doimatkhau";
-        }
-
-        // Kiểm tra mật khẩu cũ (cần sử dụng PasswordEncoder nếu đã mã hóa)
-        if (!dto.getOldPassword().equals(user.getPassword())) {
-            redirectAttributes.addFlashAttribute("error", "Mật khẩu cũ không đúng!");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.changePasswordDTO",
+                    result);
+            redirectAttributes.addFlashAttribute("changePasswordDTO", dto);
             return "redirect:/doimatkhau";
         }
 
@@ -64,12 +71,29 @@ public class ChangePassController {
             return "redirect:/doimatkhau";
         }
 
-        // Cập nhật mật khẩu mới
-        user.setPassword(dto.getNewPassword());
-        userdao.save(user);
+        // Xử lý cho User
+        if (loggedIn instanceof User user) {
+            if (!user.getPassword().equals(dto.getOldPassword())) {
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu cũ không đúng!");
+                return "redirect:/doimatkhau";
+            }
 
-        // Cập nhật session
-        session.setAttribute("loggedInUser", user);
+            user.setPassword(dto.getNewPassword());
+            userDAO.save(user);
+            session.setAttribute("loggedInUser", user);
+
+        }
+        // Xử lý cho Shipper
+        else if (loggedIn instanceof Shipper shipper) {
+            if (!shipper.getPassword().equals(dto.getOldPassword())) {
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu cũ không đúng!");
+                return "redirect:/doimatkhau";
+            }
+
+            shipper.setPassword(dto.getNewPassword());
+            shipperDAO.save(shipper);
+            session.setAttribute("loggedInUser", shipper);
+        }
 
         redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công!");
         return "redirect:/doimatkhau";

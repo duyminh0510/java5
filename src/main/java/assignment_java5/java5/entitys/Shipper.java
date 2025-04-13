@@ -16,9 +16,14 @@ public class Shipper {
     private Long id;
 
     private String fullName;
-    private String email;
     private String password;
+
+    @Column(unique = true)
+    private String email;
+
+    @Column(unique = true)
     private String phoneNumber;
+
     private String area; // Khu vực hoạt động
 
     private String cccdImagePath; // Ảnh CCCD

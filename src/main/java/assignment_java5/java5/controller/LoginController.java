@@ -82,7 +82,7 @@ public class LoginController {
             if (role.equals("ADMIN")) {
                 return "redirect:/";
             } else if (role.equals("SHIPPER")) {
-                return "redirect:/shipperpage/home";
+                return "redirect:/shipper/order";
             } else {
                 return "redirect:/";
             }
@@ -91,6 +91,11 @@ public class LoginController {
         if (shipper != null) {
             if (!shipper.getPassword().equals(password)) {
                 model.addAttribute("error", "Mật khẩu không chính xác!");
+                return "views/gdienUsers/dangnhap";
+            }
+
+            if (shipper.getStatus() == Shipper.Status.PENDING) {
+                model.addAttribute("error", "Tài khoản của bạn chưa được xác nhận, vui lòng quay lại sau!");
                 return "views/gdienUsers/dangnhap";
             }
 
@@ -108,7 +113,7 @@ public class LoginController {
                 return "redirect:" + redirectUri;
             }
 
-            return "redirect:/shipper";
+            return "redirect:/shipper/order";
         }
 
         model.addAttribute("error", "Đăng nhập thất bại!");

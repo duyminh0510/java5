@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import assignment_java5.java5.config.CloudinaryConfig;
 import assignment_java5.java5.dao.ShipperDAO;
 import assignment_java5.java5.entitys.Shipper;
 import assignment_java5.java5.entitys.Shipper.Status;
 import assignment_java5.java5.service.CloudinaryService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 

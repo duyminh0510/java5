@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- Dropdown lọc trạng thái -->
-                <form action="/shipperpage/home" method="get" class="mb-3">
+                <form action="/shipper/order" method="get" class="mb-3">
                     <label for="statusFilter"><strong>Lọc theo trạng
                             thái:</strong></label>
                     <select id="statusFilter" name="status"
@@ -71,7 +71,7 @@
                             <!-- Cập nhật trạng thái đơn hàng -->
                             <td>
                                 <form
-                                    th:action="@{/shipper/orders/update-status}"
+                                    th:action="@{/shipper/order/update-status}"
                                     method="post">
                                     <input type="hidden" name="orderId"
                                         th:value="${item.id}" />
@@ -94,7 +94,7 @@
                             <!-- Hành động (Xem chi tiết / Xóa) -->
                             <td>
                                 <a
-                                    th:href="@{/shipper/orders/{id}(id=${item.id})}"
+                                    th:href="@{/shipper/order/{id}(id=${item.id})}"
                                     class="btn btn-primary btn-sm">Xem chi
                                     tiết</a>
                             </td>
