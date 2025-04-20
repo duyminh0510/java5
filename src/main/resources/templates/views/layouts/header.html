@@ -34,10 +34,6 @@
                     <a href="/statistics" class="nav-link px-2 link-dark">Báo
                         cáo</a>
                 </li>
-                <li th:if="${session.role == 'ADMIN'}">
-                    <a href="/admin/shipper/pending"
-                        class="nav-link px-2 link-dark">Duyệt shipper</a>
-                </li>
 
                 <!-- USER -->
                 <li th:if="${session.role == 'USER'}">
@@ -82,6 +78,16 @@
                         <a class="dropdown-item" href="/hosocanhan">Chỉnh sửa hồ
                             sơ</a>
                     </li>
+
+                    <li th:if="${session.username}">
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li th:if="${session.role == 'ADMIN'}">
+                        <a href="/admin/shipper/pending"
+                            class="dropdown-item">Duyệt shipper</a>
+                    </li>
+
                     <li th:if="${session.username}">
                         <hr class="dropdown-divider">
                     </li>
